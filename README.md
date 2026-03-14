@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="hermit-256.png" alt="Hermit" width="128">
+</p>
+
 # Hermit
 
 A focused iOS SSH client built for developers who live in tmux and Claude Code.

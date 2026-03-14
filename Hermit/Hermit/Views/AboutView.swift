@@ -7,9 +7,11 @@ struct AboutView: View {
         NavigationStack {
             ScrollView {
                 VStack(spacing: 24) {
-                    Image(systemName: "terminal")
-                        .font(.system(size: 64))
-                        .foregroundStyle(.secondary)
+                    Image("HermitLogo")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 128, height: 128)
+                        .clipShape(RoundedRectangle(cornerRadius: 28))
                         .padding(.top, 40)
 
                     Text("Hermit")
@@ -56,16 +58,23 @@ struct AboutView: View {
                     .font(.subheadline)
                     .padding(.horizontal, 32)
 
+                    Button {
+                        dismiss()
+                    } label: {
+                        Text("Get Started")
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 12)
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .padding(.horizontal, 32)
+
                     Link(destination: URL(string: "https://github.com/placeholder/hermit")!) {
                         HStack {
                             Image(systemName: "arrow.up.right.square")
                             Text("View on GitHub")
                         }
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 12)
                     }
-                    .buttonStyle(.bordered)
-                    .padding(.horizontal, 32)
+                    .font(.subheadline)
 
                     Text("v1.0")
                         .font(.caption)
@@ -75,11 +84,7 @@ struct AboutView: View {
             }
             .navigationTitle("About")
             .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .confirmationAction) {
-                    Button("Done") { dismiss() }
-                }
-            }
+            .toolbar(.hidden, for: .navigationBar)
         }
     }
 

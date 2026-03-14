@@ -26,6 +26,7 @@
 		9427E70309498CDBF08B3846 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD59E0EB71DC1D5B631D2753 /* SettingsView.swift */; };
 		A1B2C3D4E5F60718192A3B4C /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5E6F708192A3B4C5D6E7F80 /* AboutView.swift */; };
 		4DBAAD9EF51F20C2BEA161E5 /* terminal.html in Resources */ = {isa = PBXBuildFile; fileRef = 6CF469136B8BD7724C12D068 /* terminal.html */; };
+		B3C4D5E6F7081920CCCCDDDD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A2B3C4D5E6F70819AAAABBBB /* Assets.xcassets */; };
 		9338B8421E2ADFC2C45471BD /* ModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 281571BEA9FA0A063ED80B4A /* ModelTests.swift */; };
 		DFCF0B3F36E792A3642C085B /* RibbonConfigTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92006A94E8BEE3AAE62B6C19 /* RibbonConfigTests.swift */; };
 		698EC92E23FFC9F980449B63 /* DataStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B93D8483C507AE268486180F /* DataStoreTests.swift */; };
@@ -69,6 +70,7 @@
 		B93D8483C507AE268486180F /* DataStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataStoreTests.swift; sourceTree = "<group>"; };
 		40AD2C9FD9796DDCE059852F /* URLSchemeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSchemeTests.swift; sourceTree = "<group>"; };
 		D5E6F708192A3B4C5D6E7F80 /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
+		A2B3C4D5E6F70819AAAABBBB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -117,6 +119,7 @@
 				D4D506C1E0D997D1DF57082B /* Voice */,
 				C454586A1F4E28C340BDC1AD /* Views */,
 				45B877375D6D6297BAAF2860 /* Resources */,
+				A2B3C4D5E6F70819AAAABBBB /* Assets.xcassets */,
 				0096DDB5D5C93DB7732319BF /* Info.plist */,
 			);
 			path = Hermit;
@@ -252,6 +255,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4DBAAD9EF51F20C2BEA161E5 /* terminal.html in Resources */,
+				B3C4D5E6F7081920CCCCDDDD /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

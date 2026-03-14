@@ -19,7 +19,7 @@ final class DataStore {
         self.localFileURL = docs.appendingPathComponent("hermit-data.json")
 
         // Try to get iCloud ubiquitous container
-        if let containerURL = FileManager.default.url(forUbiquityContainerIdentifier: nil) {
+        if let containerURL = FileManager.default.url(forUbiquityContainerIdentifier: "iCloud.com.zeromissionllc.hermit") {
             let iCloudDocsURL = containerURL.appendingPathComponent("Documents")
             try? FileManager.default.createDirectory(at: iCloudDocsURL, withIntermediateDirectories: true)
             self.iCloudURL = iCloudDocsURL.appendingPathComponent("hermit-data.json")

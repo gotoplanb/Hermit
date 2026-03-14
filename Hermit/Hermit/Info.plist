@@ -18,7 +18,7 @@
 	<array>
 		<dict>
 			<key>CFBundleURLName</key>
-			<string>com.hermit.app</string>
+			<string>com.zeromissionllc.hermit</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>hermit</string>

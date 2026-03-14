@@ -1,0 +1,31 @@
+# Xcode
+*.xcuserstate
+*.xcscmblueprint
+xcuserdata/
+DerivedData/
+*.moved-aside
+*.hmap
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# Fastlane
+Hermit/fastlane/report.xml
+Hermit/fastlane/Preview.html
+Hermit/fastlane/screenshots/**/*.png
+Hermit/fastlane/test_output
+Hermit/fastlane/README.md
+
+# Fastlane build output
+Hermit/*.ipa
+Hermit/*.app.dSYM.zip
+
+# Bundle
+Hermit/vendor/bundle
+
+# Environment
+Hermit/fastlane/.env
+.env
+
+# macOS
+.DS_Store

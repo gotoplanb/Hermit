@@ -1,0 +1,356 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		549209BD9A061593509D3A28 /* HermitApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E1D418BB2D9FB67AE86DC7D /* HermitApp.swift */; };
+		0BA5599BA8F6C23C17709334 /* Host.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41B9A81459F91BA29B484041 /* Host.swift */; };
+		9AD97B0DCE2650C15E7436BE /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 506D3F22B8E512F8477704DD /* Session.swift */; };
+		4409E77D383293F34BAB53EF /* RibbonConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5431404A90840D58CD203A9D /* RibbonConfig.swift */; };
+		29607E6FE67F3F6682C16A8B /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A68B9D5B1DCF7CFA46CF132 /* AppSettings.swift */; };
+		BD2F5E31C88CCD88254DAE6D /* DataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B245735556D145C235EC2451 /* DataStore.swift */; };
+		8289A071E829C23F907E366D /* KeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 671A41A0D0B1223FFFAE7AE1 /* KeychainManager.swift */; };
+		060D09095CE3EE208B25B4DC /* SSHConnectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1046FBE859BC4B08201D8384 /* SSHConnectionManager.swift */; };
+		0016776E4CC289BD6580B528 /* TerminalBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9149D119022BAB6A6418BAE8 /* TerminalBridge.swift */; };
+		C1DD16D12B91BA7FD453A7C7 /* VoiceInputCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF68FB3F9235F3D05D9D9ED /* VoiceInputCoordinator.swift */; };
+		4A827C5B6082616D84719E1E /* SuperWhisperProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCB48B1DF698E003796C384C /* SuperWhisperProvider.swift */; };
+		6B878949F84012546095F751 /* SessionListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2435F9E8A183D6150175307 /* SessionListView.swift */; };
+		23E6FFF7CBAA7AABAE61BD6D /* NewSessionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D4E3F8BA81DD11469FAE479 /* NewSessionView.swift */; };
+		56E185D7340403E3A2698C5B /* NewHostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C37793D32B81DDE173E82EAD /* NewHostView.swift */; };
+		1A3452C0EDC26F073FA821D8 /* TerminalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8355DD80EFA5F9636D1EC3C /* TerminalView.swift */; };
+		B80371DE1CA43395E2B4C53B /* VoiceInputModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DEAE89058FED6E1760B2389 /* VoiceInputModal.swift */; };
+		9427E70309498CDBF08B3846 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD59E0EB71DC1D5B631D2753 /* SettingsView.swift */; };
+		A1B2C3D4E5F60718192A3B4C /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5E6F708192A3B4C5D6E7F80 /* AboutView.swift */; };
+		4DBAAD9EF51F20C2BEA161E5 /* terminal.html in Resources */ = {isa = PBXBuildFile; fileRef = 6CF469136B8BD7724C12D068 /* terminal.html */; };
+		9338B8421E2ADFC2C45471BD /* ModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 281571BEA9FA0A063ED80B4A /* ModelTests.swift */; };
+		DFCF0B3F36E792A3642C085B /* RibbonConfigTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92006A94E8BEE3AAE62B6C19 /* RibbonConfigTests.swift */; };
+		698EC92E23FFC9F980449B63 /* DataStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B93D8483C507AE268486180F /* DataStoreTests.swift */; };
+		3602275B36C43BCED095D43D /* URLSchemeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40AD2C9FD9796DDCE059852F /* URLSchemeTests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		CE443B3C47ADC0559F5D21DE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 46F86FAA6BBF9AC94A7E4595 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 6439CF22188FA14BBD363342;
+			remoteInfo = Hermit;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		CE29BE284D8E7CDFA377A125 /* Hermit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hermit.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		009563950D464DFEFC18EBED /* HermitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HermitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		3E1D418BB2D9FB67AE86DC7D /* HermitApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HermitApp.swift; sourceTree = "<group>"; };
+		41B9A81459F91BA29B484041 /* Host.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Host.swift; sourceTree = "<group>"; };
+		506D3F22B8E512F8477704DD /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
+		5431404A90840D58CD203A9D /* RibbonConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RibbonConfig.swift; sourceTree = "<group>"; };
+		0A68B9D5B1DCF7CFA46CF132 /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
+		B245735556D145C235EC2451 /* DataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataStore.swift; sourceTree = "<group>"; };
+		671A41A0D0B1223FFFAE7AE1 /* KeychainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainManager.swift; sourceTree = "<group>"; };
+		1046FBE859BC4B08201D8384 /* SSHConnectionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSHConnectionManager.swift; sourceTree = "<group>"; };
+		9149D119022BAB6A6418BAE8 /* TerminalBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TerminalBridge.swift; sourceTree = "<group>"; };
+		2BF68FB3F9235F3D05D9D9ED /* VoiceInputCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceInputCoordinator.swift; sourceTree = "<group>"; };
+		FCB48B1DF698E003796C384C /* SuperWhisperProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuperWhisperProvider.swift; sourceTree = "<group>"; };
+		F2435F9E8A183D6150175307 /* SessionListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionListView.swift; sourceTree = "<group>"; };
+		8D4E3F8BA81DD11469FAE479 /* NewSessionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewSessionView.swift; sourceTree = "<group>"; };
+		C37793D32B81DDE173E82EAD /* NewHostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewHostView.swift; sourceTree = "<group>"; };
+		B8355DD80EFA5F9636D1EC3C /* TerminalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TerminalView.swift; sourceTree = "<group>"; };
+		9DEAE89058FED6E1760B2389 /* VoiceInputModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceInputModal.swift; sourceTree = "<group>"; };
+		CD59E0EB71DC1D5B631D2753 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		6CF469136B8BD7724C12D068 /* terminal.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = terminal.html; sourceTree = "<group>"; };
+		0096DDB5D5C93DB7732319BF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		281571BEA9FA0A063ED80B4A /* ModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelTests.swift; sourceTree = "<group>"; };
+		92006A94E8BEE3AAE62B6C19 /* RibbonConfigTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RibbonConfigTests.swift; sourceTree = "<group>"; };
+		B93D8483C507AE268486180F /* DataStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataStoreTests.swift; sourceTree = "<group>"; };
+		40AD2C9FD9796DDCE059852F /* URLSchemeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSchemeTests.swift; sourceTree = "<group>"; };
+		D5E6F708192A3B4C5D6E7F80 /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		56BAF137DAAFD967197255D3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		72EAF812E2D653AC0BDA8C73 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		7882D14E196057770B59E53D = {
+			isa = PBXGroup;
+			children = (
+				289D96B1C25E9A61134D7A5B /* Hermit */,
+				1053437449B7D33F1E8ACD5E /* HermitTests */,
+				BF7A2D27A78D590BDEF15AF2 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		BF7A2D27A78D590BDEF15AF2 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				CE29BE284D8E7CDFA377A125 /* Hermit.app */,
+				009563950D464DFEFC18EBED /* HermitTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		289D96B1C25E9A61134D7A5B /* Hermit */ = {
+			isa = PBXGroup;
+			children = (
+				FE910D29D648D8F2EA669AEF /* App */,
+				9CF43B31E8845D861542A38E /* Models */,
+				F26201C1E65404DE8245CC9E /* Storage */,
+				7856F3F774A086F38BD22482 /* SSH */,
+				D4D506C1E0D997D1DF57082B /* Voice */,
+				C454586A1F4E28C340BDC1AD /* Views */,
+				45B877375D6D6297BAAF2860 /* Resources */,
+				0096DDB5D5C93DB7732319BF /* Info.plist */,
+			);
+			path = Hermit;
+			sourceTree = "<group>";
+		};
+		FE910D29D648D8F2EA669AEF /* App */ = {
+			isa = PBXGroup;
+			children = (
+				3E1D418BB2D9FB67AE86DC7D /* HermitApp.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		9CF43B31E8845D861542A38E /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				41B9A81459F91BA29B484041 /* Host.swift */,
+				506D3F22B8E512F8477704DD /* Session.swift */,
+				5431404A90840D58CD203A9D /* RibbonConfig.swift */,
+				0A68B9D5B1DCF7CFA46CF132 /* AppSettings.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		F26201C1E65404DE8245CC9E /* Storage */ = {
+			isa = PBXGroup;
+			children = (
+				B245735556D145C235EC2451 /* DataStore.swift */,
+				671A41A0D0B1223FFFAE7AE1 /* KeychainManager.swift */,
+			);
+			path = Storage;
+			sourceTree = "<group>";
+		};
+		7856F3F774A086F38BD22482 /* SSH */ = {
+			isa = PBXGroup;
+			children = (
+				1046FBE859BC4B08201D8384 /* SSHConnectionManager.swift */,
+				9149D119022BAB6A6418BAE8 /* TerminalBridge.swift */,
+			);
+			path = SSH;
+			sourceTree = "<group>";
+		};
+		D4D506C1E0D997D1DF57082B /* Voice */ = {
+			isa = PBXGroup;
+			children = (
+				2BF68FB3F9235F3D05D9D9ED /* VoiceInputCoordinator.swift */,
+				FCB48B1DF698E003796C384C /* SuperWhisperProvider.swift */,
+			);
+			path = Voice;
+			sourceTree = "<group>";
+		};
+		C454586A1F4E28C340BDC1AD /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				F2435F9E8A183D6150175307 /* SessionListView.swift */,
+				8D4E3F8BA81DD11469FAE479 /* NewSessionView.swift */,
+				C37793D32B81DDE173E82EAD /* NewHostView.swift */,
+				B8355DD80EFA5F9636D1EC3C /* TerminalView.swift */,
+				9DEAE89058FED6E1760B2389 /* VoiceInputModal.swift */,
+				CD59E0EB71DC1D5B631D2753 /* SettingsView.swift */,
+				D5E6F708192A3B4C5D6E7F80 /* AboutView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		45B877375D6D6297BAAF2860 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				6CF469136B8BD7724C12D068 /* terminal.html */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		1053437449B7D33F1E8ACD5E /* HermitTests */ = {
+			isa = PBXGroup;
+			children = (
+				281571BEA9FA0A063ED80B4A /* ModelTests.swift */,
+				92006A94E8BEE3AAE62B6C19 /* RibbonConfigTests.swift */,
+				B93D8483C507AE268486180F /* DataStoreTests.swift */,
+				40AD2C9FD9796DDCE059852F /* URLSchemeTests.swift */,
+			);
+			path = HermitTests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		6439CF22188FA14BBD363342 /* Hermit */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E850913E5F419DF1836B1B18 /* Build configuration list for PBXNativeTarget "Hermit" */;
+			buildPhases = (869AA75568406BC6181D282D /* Sources */,56BAF137DAAFD967197255D3 /* Frameworks */,77417434AB4C68AD87C05857 /* Resources */,);
+			buildRules = ();
+			dependencies = ();
+			name = Hermit;
+			packageProductDependencies = ();
+			productName = Hermit;
+			productReference = CE29BE284D8E7CDFA377A125 /* Hermit.app */;
+			productType = "com.apple.product-type.application";
+		};
+		BA128F9D3C0D15FFB32AEEA8 /* HermitTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 48EA9C817F74F26250070E59 /* Build configuration list for PBXNativeTarget "HermitTests" */;
+			buildPhases = (6E010B3D85AA514D3FB28B7F /* Sources */,72EAF812E2D653AC0BDA8C73 /* Frameworks */,);
+			buildRules = ();
+			dependencies = (EE543492886B1A944A594DA2 /* PBXTargetDependency */,);
+			name = HermitTests;
+			productName = HermitTests;
+			productReference = 009563950D464DFEFC18EBED /* HermitTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		46F86FAA6BBF9AC94A7E4595 /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = CB7CBE0C3B42E7D081FECC31 /* Build configuration list for PBXProject "Hermit" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (en,Base,);
+			mainGroup = 7882D14E196057770B59E53D;
+			packageReferences = ();
+			productRefGroup = BF7A2D27A78D590BDEF15AF2 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (6439CF22188FA14BBD363342 /* Hermit */,BA128F9D3C0D15FFB32AEEA8 /* HermitTests */,);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		77417434AB4C68AD87C05857 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4DBAAD9EF51F20C2BEA161E5 /* terminal.html in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		869AA75568406BC6181D282D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				549209BD9A061593509D3A28 /* HermitApp.swift in Sources */,
+				0BA5599BA8F6C23C17709334 /* Host.swift in Sources */,
+				9AD97B0DCE2650C15E7436BE /* Session.swift in Sources */,
+				4409E77D383293F34BAB53EF /* RibbonConfig.swift in Sources */,
+				29607E6FE67F3F6682C16A8B /* AppSettings.swift in Sources */,
+				BD2F5E31C88CCD88254DAE6D /* DataStore.swift in Sources */,
+				8289A071E829C23F907E366D /* KeychainManager.swift in Sources */,
+				060D09095CE3EE208B25B4DC /* SSHConnectionManager.swift in Sources */,
+				0016776E4CC289BD6580B528 /* TerminalBridge.swift in Sources */,
+				C1DD16D12B91BA7FD453A7C7 /* VoiceInputCoordinator.swift in Sources */,
+				4A827C5B6082616D84719E1E /* SuperWhisperProvider.swift in Sources */,
+				6B878949F84012546095F751 /* SessionListView.swift in Sources */,
+				23E6FFF7CBAA7AABAE61BD6D /* NewSessionView.swift in Sources */,
+				56E185D7340403E3A2698C5B /* NewHostView.swift in Sources */,
+				1A3452C0EDC26F073FA821D8 /* TerminalView.swift in Sources */,
+				B80371DE1CA43395E2B4C53B /* VoiceInputModal.swift in Sources */,
+				9427E70309498CDBF08B3846 /* SettingsView.swift in Sources */,
+				A1B2C3D4E5F60718192A3B4C /* AboutView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6E010B3D85AA514D3FB28B7F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9338B8421E2ADFC2C45471BD /* ModelTests.swift in Sources */,
+				DFCF0B3F36E792A3642C085B /* RibbonConfigTests.swift in Sources */,
+				698EC92E23FFC9F980449B63 /* DataStoreTests.swift in Sources */,
+				3602275B36C43BCED095D43D /* URLSchemeTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		EE543492886B1A944A594DA2 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 6439CF22188FA14BBD363342 /* Hermit */;
+			targetProxy = CE443B3C47ADC0559F5D21DE /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		E95DB3DDB35DB25437EE0C0B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {ALWAYS_SEARCH_USER_PATHS = NO; CLANG_ENABLE_MODULES = YES; CLANG_ENABLE_OBJC_ARC = YES; COPY_PHASE_STRIP = NO; DEBUG_INFORMATION_FORMAT = dwarf; ENABLE_STRICT_OBJC_MSGSEND = YES; ENABLE_TESTABILITY = YES; GCC_DYNAMIC_NO_PIC = NO; GCC_OPTIMIZATION_LEVEL = 0; GCC_PREPROCESSOR_DEFINITIONS = ("DEBUG=1","",); IPHONEOS_DEPLOYMENT_TARGET = 17.0; MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE; ONLY_ACTIVE_ARCH = YES; SDKROOT = iphoneos; SWIFT_ACTIVE_COMPILATION_CONDITIONS = " DEBUG"; SWIFT_OPTIMIZATION_LEVEL = "-Onone"; SWIFT_VERSION = 5.0; };
+			name = Debug;
+		};
+		9584AF23772D44B73CAE1DEA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {ALWAYS_SEARCH_USER_PATHS = NO; CLANG_ENABLE_MODULES = YES; CLANG_ENABLE_OBJC_ARC = YES; COPY_PHASE_STRIP = NO; DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym"; ENABLE_NS_ASSERTIONS = NO; ENABLE_STRICT_OBJC_MSGSEND = YES; IPHONEOS_DEPLOYMENT_TARGET = 17.0; MTL_ENABLE_DEBUG_INFO = NO; SDKROOT = iphoneos; SWIFT_COMPILATION_MODE = wholemodule; SWIFT_VERSION = 5.0; VALIDATE_PRODUCT = YES; };
+			name = Release;
+		};
+		C6CDA4B6FD66A7F05D1ACD64 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon; CODE_SIGN_STYLE = Automatic; INFOPLIST_FILE = Hermit/Info.plist; LD_RUNPATH_SEARCH_PATHS = ("","@executable_path/Frameworks",); PRODUCT_BUNDLE_IDENTIFIER = com.hermit.app; PRODUCT_NAME = "$(TARGET_NAME)"; SWIFT_EMIT_LOC_STRINGS = YES; TARGETED_DEVICE_FAMILY = 1; };
+			name = Debug;
+		};
+		C3D81280F6567D74515A67A7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon; CODE_SIGN_STYLE = Automatic; INFOPLIST_FILE = Hermit/Info.plist; LD_RUNPATH_SEARCH_PATHS = ("","@executable_path/Frameworks",); PRODUCT_BUNDLE_IDENTIFIER = com.hermit.app; PRODUCT_NAME = "$(TARGET_NAME)"; SWIFT_EMIT_LOC_STRINGS = YES; TARGETED_DEVICE_FAMILY = 1; };
+			name = Release;
+		};
+		621385DDFDB50DB5DC3C7AFD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {BUNDLE_LOADER = "$(TEST_HOST)"; CODE_SIGN_STYLE = Automatic; PRODUCT_BUNDLE_IDENTIFIER = com.hermit.HermitTests; PRODUCT_NAME = "$(TARGET_NAME)"; TARGETED_DEVICE_FAMILY = 1; TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Hermit.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Hermit"; };
+			name = Debug;
+		};
+		0472651C93A265996FEFE4D2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {BUNDLE_LOADER = "$(TEST_HOST)"; CODE_SIGN_STYLE = Automatic; PRODUCT_BUNDLE_IDENTIFIER = com.hermit.HermitTests; PRODUCT_NAME = "$(TARGET_NAME)"; TARGETED_DEVICE_FAMILY = 1; TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Hermit.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Hermit"; };
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		CB7CBE0C3B42E7D081FECC31 /* Build configuration list for PBXProject "Hermit" */ = {
+			isa = XCConfigurationList; buildConfigurations = (E95DB3DDB35DB25437EE0C0B /* Debug */,9584AF23772D44B73CAE1DEA /* Release */,); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release;
+		};
+		E850913E5F419DF1836B1B18 /* Build configuration list for PBXNativeTarget "Hermit" */ = {
+			isa = XCConfigurationList; buildConfigurations = (C6CDA4B6FD66A7F05D1ACD64 /* Debug */,C3D81280F6567D74515A67A7 /* Release */,); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release;
+		};
+		48EA9C817F74F26250070E59 /* Build configuration list for PBXNativeTarget "HermitTests" */ = {
+			isa = XCConfigurationList; buildConfigurations = (621385DDFDB50DB5DC3C7AFD /* Debug */,0472651C93A265996FEFE4D2 /* Release */,); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Citadel SPM dependency will be added back when SSH is implemented */
+
+	};
+	rootObject = 46F86FAA6BBF9AC94A7E4595 /* Project object */;
+}

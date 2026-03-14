@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { height: 100%; background: #1e1e1e; overflow: hidden; }
+  #terminal { height: 100%; width: 100%; }
+</style>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@xterm/xterm@5.5.0/css/xterm.css">
+</head>
+<body>
+<div id="terminal"></div>
+<script src="https://cdn.jsdelivr.net/npm/@xterm/xterm@5.5.0/lib/xterm.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@xterm/addon-fit@0.10.0/lib/addon-fit.js"></script>
+<script>
+  const term = new Terminal({
+    theme: {
+      background: '#1e1e1e',
+      foreground: '#d4d4d4',
+      cursor: '#d4d4d4',
+      selectionBackground: '#264f78',
+    },
+    fontFamily: 'Menlo, monospace',
+    fontSize: 14,
+    scrollback: 10000,
+    cursorBlink: true,
+  });
+
+  const fitAddon = new FitAddon.FitAddon();
+  term.loadAddon(fitAddon);
+  term.open(document.getElementById('terminal'));
+  fitAddon.fit();
+
+  window.addEventListener('resize', () => fitAddon.fit());
+
+  term.onData(data => {
+    if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.terminalInput) {
+      window.webkit.messageHandlers.terminalInput.postMessage(data);
+    }
+  });
+
+  function writeToTerminal(data) {
+    term.write(data);
+  }
+</script>
+</body>
+</html>

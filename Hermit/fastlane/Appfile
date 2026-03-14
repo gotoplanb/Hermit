@@ -1,0 +1,2 @@
+app_identifier("com.hermit.app")
+team_id(ENV["TEAM_ID"])

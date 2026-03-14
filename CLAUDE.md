@@ -4,15 +4,31 @@
 
 Hermit is an iOS SSH client for connecting to remote dev machines, attaching to tmux sessions, and interacting with Claude Code via configurable soft keys and voice input. It is not a general-purpose terminal emulator.
 
+## Public Repo — No Secrets
+
+**This is a public repository.** Never commit secrets to version control:
+- No `DEVELOPMENT_TEAM` in project.pbxproj
+- No API keys, team IDs, or signing credentials in any committed file
+- Use `fastlane/.env` (gitignored) for local secrets
+- Pass `DEVELOPMENT_TEAM` via xcodebuild flags, never in the project file
+- Document required vars in `fastlane/.env.example` only
+
 ## Build & Run
 
 ```bash
 # Build and run via XcodeBuild MCP (preferred)
 # Session defaults: project=Hermit.xcodeproj, scheme=Hermit, simulator=iPhone 17 Pro
 
-# Or via xcodebuild directly
+# Or via xcodebuild directly (simulator)
 cd Hermit
 xcodebuild -project Hermit.xcodeproj -scheme Hermit -destination 'platform=iOS Simulator,name=iPhone 17 Pro' build
+
+# Real device — pass DEVELOPMENT_TEAM as build setting, not in project file
+xcodebuild -project Hermit.xcodeproj -scheme Hermit \
+  -destination 'id=DEVICE_UDID' \
+  -allowProvisioningUpdates \
+  DEVELOPMENT_TEAM=$TEAM_ID \
+  build
 ```
 
 ## Test

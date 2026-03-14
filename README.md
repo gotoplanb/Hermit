@@ -56,7 +56,7 @@ See `fastlane/.env.example` for required environment variables.
 | Terminal | xterm.js in WKWebView |
 | Data persistence | JSON in iCloud Drive (local fallback) |
 | Key storage | iOS Keychain |
-| Code signing | fastlane match (private Git repo) |
+| Code signing | Xcode automatic signing |
 
 ## Project Structure
 

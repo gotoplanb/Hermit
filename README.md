@@ -1,6 +1,4 @@
-<p align="center">
-  <img src="hermit-256.png" alt="Hermit" width="128">
-</p>
+<img src="hermit-256.png" alt="Hermit" width="128">
 
 # Hermit
 

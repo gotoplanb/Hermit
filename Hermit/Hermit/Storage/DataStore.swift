@@ -29,6 +29,7 @@ final class DataStore {
 
         migrateLocalToiCloudIfNeeded()
         load()
+        createFileIfNeeded()
         startWatchingForChanges()
     }
 
@@ -114,6 +115,13 @@ final class DataStore {
 
     func sessions(for host: Host) -> [Session] {
         sessions.filter { $0.hostID == host.id }
+    }
+
+    private func createFileIfNeeded() {
+        let url = fileURL
+        if !FileManager.default.fileExists(atPath: url.path) {
+            save()
+        }
     }
 
     // MARK: - iCloud Sync

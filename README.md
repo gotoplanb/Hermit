@@ -28,7 +28,15 @@ Hermit is not a general-purpose terminal emulator. It connects to remote dev mac
 
 ### iCloud Drive Sync
 
-Session and host configuration is stored in `hermit-data.json` in your iCloud Drive container. This syncs automatically across all devices signed into the same iCloud account. You can also edit this file directly from a Mac via Finder.
+Session and host configuration is stored in `hermit-data.json` in your iCloud Drive container. This syncs automatically across all devices signed into the same iCloud account. You can edit this file directly from a Mac:
+
+```
+# In Finder
+iCloud Drive → Hermit → Documents → hermit-data.json
+
+# Or via terminal
+~/Library/Mobile Documents/iCloud~com~zeromissionllc~hermit/Documents/hermit-data.json
+```
 
 Private keys are stored in the iOS Keychain and do not sync — they must be added per device.
 

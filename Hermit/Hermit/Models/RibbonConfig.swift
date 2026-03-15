@@ -4,9 +4,9 @@ struct RibbonConfig: Codable {
     var buttons: [RibbonButton]
 
     static let `default` = RibbonConfig(buttons: [
-        RibbonButton(label: "1", labelType: .text, action: .sendString("1\n")),
-        RibbonButton(label: "2", labelType: .text, action: .sendString("2\n")),
-        RibbonButton(label: "3", labelType: .text, action: .sendString("3\n")),
+        RibbonButton(label: "1", labelType: .text, action: .sendString("1")),
+        RibbonButton(label: "2", labelType: .text, action: .sendString("2")),
+        RibbonButton(label: "return", labelType: .sfSymbol, action: .sendString("\r")),
         RibbonButton(label: "esc", labelType: .text, action: .sendString("\u{1B}")),
         RibbonButton(label: "mic.fill", labelType: .sfSymbol, action: .voiceInput),
     ])

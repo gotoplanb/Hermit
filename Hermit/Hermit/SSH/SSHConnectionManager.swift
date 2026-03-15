@@ -105,6 +105,8 @@ final class SSHConnectionManager {
     }
 
     func send(data: String) {
+        let hex = data.utf8.map { String(format: "%02x", $0) }.joined(separator: " ")
+        logger.info("send() data='\(data)' hex=[\(hex)]")
         guard let writer = stdinWriter else {
             logger.warning("send() called but stdinWriter is nil")
             return

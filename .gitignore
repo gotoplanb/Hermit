@@ -27,5 +27,8 @@ Hermit/vendor/bundle
 Hermit/fastlane/.env
 .env
 
+# Dev test config (contains host credentials)
+.hermit-dev.json
+
 # macOS
 .DS_Store

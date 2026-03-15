@@ -13,23 +13,70 @@ Hermit is an iOS SSH client for connecting to remote dev machines, attaching to 
 - Pass `DEVELOPMENT_TEAM` via xcodebuild flags, never in the project file
 - Document required vars in `fastlane/.env.example` only
 
-## Build & Run
+## Build & Deploy
+
+**Preferred workflow: check for connected iPhone first, fall back to TestFlight.**
 
 ```bash
-# Build and run via XcodeBuild MCP (preferred)
-# Session defaults: project=Hermit.xcodeproj, scheme=Hermit, simulator=iPhone 17 Pro
+# 1. Check if Dave's iPhone is connected
+xcrun xctrace list devices 2>&1 | grep "iPhone"
 
-# Or via xcodebuild directly (simulator)
+# 2a. If connected — build, install, and launch directly (fastest iteration)
 cd Hermit
-xcodebuild -project Hermit.xcodeproj -scheme Hermit -destination 'platform=iOS Simulator,name=iPhone 17 Pro' build
-
-# Real device — pass DEVELOPMENT_TEAM as build setting, not in project file
 xcodebuild -project Hermit.xcodeproj -scheme Hermit \
-  -destination 'id=DEVICE_UDID' \
+  -destination 'id=00008140-00046DA00133001C' \
   -allowProvisioningUpdates \
   DEVELOPMENT_TEAM=$TEAM_ID \
   build
+xcrun devicectl device install app --device 00008140-00046DA00133001C \
+  ~/Library/Developer/Xcode/DerivedData/Hermit-*/Build/Products/Debug-iphoneos/Hermit.app
+xcrun devicectl device process launch --device 00008140-00046DA00133001C com.zeromissionllc.hermit
+
+# 2b. If not connected — send to TestFlight
+cd Hermit
+bundle exec fastlane beta
+
+# 3. Simulator (for UI development when device isn't needed)
+xcodebuild -project Hermit.xcodeproj -scheme Hermit -destination 'platform=iOS Simulator,name=iPhone 17 Pro' build
 ```
+
+## Simulator Test Data
+
+`.hermit-dev.json` in the project root (gitignored) contains host/session config and a `devPrivateKeyPath` for simulator testing. To inject test data and the SSH key:
+
+```bash
+# 1. Get the simulator app data container
+DOCS=$(xcrun simctl get_app_container booted com.zeromissionllc.hermit data)/Documents
+mkdir -p "$DOCS"
+
+# 2. Copy the data file (strip the devPrivateKeyPath field)
+python3 -c "
+import json
+with open('.hermit-dev.json') as f: d = json.load(f)
+d.pop('devPrivateKeyPath', None)
+with open('$DOCS/hermit-data.json', 'w') as f: json.dump(d, f, indent=2)
+"
+
+# 3. Inject the private key into the simulator's Keychain
+KEY_REF=\$(python3 -c "
+import json
+with open('.hermit-dev.json') as f: d = json.load(f)
+print(d['hosts'][0]['privateKeyRef'])
+")
+KEY_PATH=\$(python3 -c "
+import json, os
+with open('.hermit-dev.json') as f: d = json.load(f)
+print(os.path.expanduser(d['devPrivateKeyPath']))
+")
+# Note: Simulator Keychain injection requires the app to save the key on launch.
+# For now, the key is read from the file path at SSH connect time during dev.
+
+# 4. Relaunch the app
+xcrun simctl terminate booted com.zeromissionllc.hermit
+xcrun simctl launch booted com.zeromissionllc.hermit
+```
+
+The simulator uses the Mac's network, so it can reach any host the Mac can (including ngrok tunnels). This enables end-to-end SSH testing once Citadel is integrated.
 
 ## Test
 

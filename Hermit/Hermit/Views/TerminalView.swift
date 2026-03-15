@@ -42,7 +42,7 @@ struct TerminalView: View {
         }
         .sheet(isPresented: $showingVoiceModal) {
             VoiceInputModal(text: $voiceText) { finalText in
-                ssh.send(data: finalText + "\n")
+                ssh.send(data: finalText + "\r")
             }
         }
         .onChange(of: voiceCoordinator.isShowingVoiceModal) { _, show in

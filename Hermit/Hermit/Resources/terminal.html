@@ -44,6 +44,11 @@
   function writeToTerminal(data) {
     term.write(data);
   }
+
+  // Signal to Swift that xterm.js is ready
+  if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.terminalReady) {
+    window.webkit.messageHandlers.terminalReady.postMessage('ready');
+  }
 </script>
 </body>
 </html>

@@ -9,6 +9,7 @@ struct TerminalWebView: UIViewRepresentable {
         let config = WKWebViewConfiguration()
         let controller = WKUserContentController()
         controller.add(context.coordinator, name: "terminalInput")
+        controller.add(context.coordinator, name: "terminalReady")
         config.userContentController = controller
 
         let webView = WKWebView(frame: .zero, configuration: config)
@@ -27,21 +28,25 @@ struct TerminalWebView: UIViewRepresentable {
     func updateUIView(_ uiView: WKWebView, context: Context) {}
 
     func makeCoordinator() -> Coordinator {
-        Coordinator(onInput: onInput)
+        Coordinator(onInput: onInput, webViewStore: webViewStore)
     }
 
     class Coordinator: NSObject, WKScriptMessageHandler {
         let onInput: (String) -> Void
+        let webViewStore: WebViewStore
 
-        init(onInput: @escaping (String) -> Void) {
+        init(onInput: @escaping (String) -> Void, webViewStore: WebViewStore) {
             self.onInput = onInput
+            self.webViewStore = webViewStore
         }
 
         func userContentController(
             _ userContentController: WKUserContentController,
             didReceive message: WKScriptMessage
         ) {
-            if let text = message.body as? String {
+            if message.name == "terminalReady" {
+                webViewStore.isReady = true
+            } else if message.name == "terminalInput", let text = message.body as? String {
                 onInput(text)
             }
         }
@@ -51,8 +56,29 @@ struct TerminalWebView: UIViewRepresentable {
 @Observable
 final class WebViewStore {
     var webView: WKWebView?
+    var isReady = false {
+        didSet {
+            if isReady { flushBuffer() }
+        }
+    }
+    private var buffer: [String] = []
 
     func writeToTerminal(_ data: String) {
+        if isReady {
+            sendToJS(data)
+        } else {
+            buffer.append(data)
+        }
+    }
+
+    private func flushBuffer() {
+        for data in buffer {
+            sendToJS(data)
+        }
+        buffer.removeAll()
+    }
+
+    private func sendToJS(_ data: String) {
         let escaped = data
             .replacingOccurrences(of: "\\", with: "\\\\")
             .replacingOccurrences(of: "'", with: "\\'")

@@ -1,2 +1,2 @@
-app_identifier("com.hermit.app")
+app_identifier("com.zeromissionllc.hermit")
 team_id(ENV["TEAM_ID"])

@@ -5,28 +5,19 @@ platform :ios do
     setup_ci if ENV["CI"]
   end
 
-  desc "Load App Store Connect API key from environment"
-  lane :load_asc_api_key do
-    app_store_connect_api_key(
+  desc "Build and upload to TestFlight"
+  lane :beta do
+    api_key = app_store_connect_api_key(
       key_id: ENV["APP_STORE_CONNECT_KEY_ID"],
       issuer_id: ENV["APP_STORE_CONNECT_ISSUER_ID"],
       key_content: ENV["APP_STORE_CONNECT_API_KEY"],
       is_key_content_base64: true,
     )
-  end
 
-  desc "Sync code signing certificates and profiles"
-  lane :sync_signing do
-    match(type: "appstore", readonly: true)
-  end
-
-  desc "Build and upload to TestFlight"
-  lane :beta do
-    load_asc_api_key
-    sync_signing
-
+    build_number = Time.now.strftime("%Y%m%d%H%M")
     increment_build_number(
       xcodeproj: "Hermit.xcodeproj",
+      build_number: build_number,
     )
 
     build_app(
@@ -34,20 +25,33 @@ platform :ios do
       scheme: "Hermit",
       export_method: "app-store",
       clean: true,
+      xcargs: "DEVELOPMENT_TEAM=#{ENV['TEAM_ID']}",
+      export_options: {
+        provisioningProfiles: {
+          "com.zeromissionllc.hermit" => "Hermit App Store",
+        },
+      },
     )
 
     upload_to_testflight(
+      api_key: api_key,
       skip_waiting_for_build_processing: true,
     )
   end
 
   desc "Build and submit for App Store review"
   lane :release do
-    load_asc_api_key
-    sync_signing
+    api_key = app_store_connect_api_key(
+      key_id: ENV["APP_STORE_CONNECT_KEY_ID"],
+      issuer_id: ENV["APP_STORE_CONNECT_ISSUER_ID"],
+      key_content: ENV["APP_STORE_CONNECT_API_KEY"],
+      is_key_content_base64: true,
+    )
 
+    build_number = Time.now.strftime("%Y%m%d%H%M")
     increment_build_number(
       xcodeproj: "Hermit.xcodeproj",
+      build_number: build_number,
     )
 
     build_app(
@@ -55,9 +59,16 @@ platform :ios do
       scheme: "Hermit",
       export_method: "app-store",
       clean: true,
+      xcargs: "DEVELOPMENT_TEAM=#{ENV['TEAM_ID']}",
+      export_options: {
+        provisioningProfiles: {
+          "com.zeromissionllc.hermit" => "Hermit App Store",
+        },
+      },
     )
 
     upload_to_app_store(
+      api_key: api_key,
       skip_metadata: true,
       skip_screenshots: true,
       submit_for_review: true,

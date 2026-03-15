@@ -76,7 +76,7 @@ struct TerminalView: View {
     }
 
     private func ribbonBar(config: RibbonConfig) -> some View {
-        HStack(spacing: 8) {
+        HStack(spacing: 12) {
             ForEach(config.buttons) { button in
                 Button {
                     handleRibbonButton(button)

@@ -94,7 +94,10 @@ final class SSHConnectionManager {
     }
 
     func send(data: String) {
-        guard let writer = stdinWriter else { return }
+        guard let writer = stdinWriter else {
+            logger.warning("send() called but stdinWriter is nil")
+            return
+        }
         Task {
             var buf = ByteBufferAllocator().buffer(capacity: data.utf8.count)
             buf.writeString(data)

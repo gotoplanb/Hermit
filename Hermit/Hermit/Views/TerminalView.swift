@@ -18,6 +18,7 @@ struct TerminalView: View {
                 onInput: { text in ssh.send(data: text) },
                 webViewStore: webViewStore
             )
+            .ignoresSafeArea(.container, edges: .bottom)
 
             if let host {
                 ribbonBar(config: host.ribbonConfig)

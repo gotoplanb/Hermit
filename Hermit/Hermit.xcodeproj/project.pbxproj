@@ -27,6 +27,7 @@
 		A1B2C3D4E5F60718192A3B4C /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5E6F708192A3B4C5D6E7F80 /* AboutView.swift */; };
 		4DBAAD9EF51F20C2BEA161E5 /* terminal.html in Resources */ = {isa = PBXBuildFile; fileRef = 6CF469136B8BD7724C12D068 /* terminal.html */; };
 		B3C4D5E6F7081920CCCCDDDD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A2B3C4D5E6F70819AAAABBBB /* Assets.xcassets */; };
+		C4D5E6F7A8B90000XTERMBLD /* xterm in Resources */ = {isa = PBXBuildFile; fileRef = F1A2B3C4D5E60000XTERMDIR /* xterm */; };
 		9338B8421E2ADFC2C45471BD /* ModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 281571BEA9FA0A063ED80B4A /* ModelTests.swift */; };
 		DFCF0B3F36E792A3642C085B /* RibbonConfigTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92006A94E8BEE3AAE62B6C19 /* RibbonConfigTests.swift */; };
 		698EC92E23FFC9F980449B63 /* DataStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B93D8483C507AE268486180F /* DataStoreTests.swift */; };
@@ -72,6 +73,7 @@
 		D5E6F708192A3B4C5D6E7F80 /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
 		A2B3C4D5E6F70819AAAABBBB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E1F2A3B4C5D6E7F8EEEEFFFF /* Hermit.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Hermit.entitlements; sourceTree = "<group>"; };
+		F1A2B3C4D5E60000XTERMDIR /* xterm */ = {isa = PBXFileReference; lastKnownFileType = folder; path = xterm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -191,6 +193,7 @@
 			isa = PBXGroup;
 			children = (
 				6CF469136B8BD7724C12D068 /* terminal.html */,
+				F1A2B3C4D5E60000XTERMDIR /* xterm */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -258,6 +261,7 @@
 			files = (
 				4DBAAD9EF51F20C2BEA161E5 /* terminal.html in Resources */,
 				B3C4D5E6F7081920CCCCDDDD /* Assets.xcassets in Resources */,
+				C4D5E6F7A8B90000XTERMBLD /* xterm in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -53,7 +53,7 @@ final class DataStore {
             guard let data else { return }
 
             let backup = try JSONDecoder.hermit.decode(BackupData.self, from: data)
-            self.hosts = backup.hosts.map { migrateRibbonNewlines($0) }
+            self.hosts = backup.hosts.map { migrateHost($0) }
             self.sessions = backup.sessions
         } catch {
             print("Failed to load data: \(error)")
@@ -117,20 +117,11 @@ final class DataStore {
         sessions.filter { $0.hostID == host.id }
     }
 
-    private func migrateRibbonNewlines(_ host: Host) -> Host {
+    private func migrateHost(_ host: Host) -> Host {
         var host = host
-        host.ribbonConfig.buttons = host.ribbonConfig.buttons.map { button in
-            var button = button
-            if case .sendString(let str) = button.action,
-               str.count == 2,
-               (str.hasSuffix("\n") || str.hasSuffix("\r")) {
-                // Strip trailing \n or \r from 2-char strings (1\n → 1)
-                // Claude Code reads single keystrokes in raw mode
-                let trimmed = String(str.dropLast())
-                button.action = .sendString(trimmed)
-            }
-            return button
-        }
+        // Always sync ribbon config to current defaults
+        // During active development, this ensures all hosts pick up button changes
+        host.ribbonConfig = .default
         return host
     }
 

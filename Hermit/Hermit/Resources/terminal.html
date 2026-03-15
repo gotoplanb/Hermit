@@ -32,8 +32,21 @@
   term.loadAddon(fitAddon);
   term.open(document.getElementById('terminal'));
   fitAddon.fit();
+  reportSize();
 
-  window.addEventListener('resize', () => fitAddon.fit());
+  window.addEventListener('resize', () => {
+    fitAddon.fit();
+    reportSize();
+  });
+
+  function reportSize() {
+    if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.terminalSize) {
+      window.webkit.messageHandlers.terminalSize.postMessage({
+        cols: term.cols,
+        rows: term.rows
+      });
+    }
+  }
 
   term.onData(data => {
     if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.terminalInput) {
@@ -43,6 +56,11 @@
 
   function writeToTerminal(data) {
     term.write(data);
+  }
+
+  function fitTerminal() {
+    fitAddon.fit();
+    reportSize();
   }
 
   // Signal to Swift that xterm.js is ready

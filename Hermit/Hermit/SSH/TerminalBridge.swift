@@ -3,6 +3,7 @@ import WebKit
 
 struct TerminalWebView: UIViewRepresentable {
     let onInput: (String) -> Void
+    let onSizeChanged: ((Int, Int) -> Void)?
     let webViewStore: WebViewStore
 
     func makeUIView(context: Context) -> WKWebView {
@@ -10,6 +11,7 @@ struct TerminalWebView: UIViewRepresentable {
         let controller = WKUserContentController()
         controller.add(context.coordinator, name: "terminalInput")
         controller.add(context.coordinator, name: "terminalReady")
+        controller.add(context.coordinator, name: "terminalSize")
         config.userContentController = controller
 
         let webView = WKWebView(frame: .zero, configuration: config)
@@ -28,15 +30,17 @@ struct TerminalWebView: UIViewRepresentable {
     func updateUIView(_ uiView: WKWebView, context: Context) {}
 
     func makeCoordinator() -> Coordinator {
-        Coordinator(onInput: onInput, webViewStore: webViewStore)
+        Coordinator(onInput: onInput, onSizeChanged: onSizeChanged, webViewStore: webViewStore)
     }
 
     class Coordinator: NSObject, WKScriptMessageHandler {
         let onInput: (String) -> Void
+        let onSizeChanged: ((Int, Int) -> Void)?
         let webViewStore: WebViewStore
 
-        init(onInput: @escaping (String) -> Void, webViewStore: WebViewStore) {
+        init(onInput: @escaping (String) -> Void, onSizeChanged: ((Int, Int) -> Void)?, webViewStore: WebViewStore) {
             self.onInput = onInput
+            self.onSizeChanged = onSizeChanged
             self.webViewStore = webViewStore
         }
 
@@ -44,10 +48,21 @@ struct TerminalWebView: UIViewRepresentable {
             _ userContentController: WKUserContentController,
             didReceive message: WKScriptMessage
         ) {
-            if message.name == "terminalReady" {
+            switch message.name {
+            case "terminalReady":
                 webViewStore.isReady = true
-            } else if message.name == "terminalInput", let text = message.body as? String {
-                onInput(text)
+            case "terminalInput":
+                if let text = message.body as? String {
+                    onInput(text)
+                }
+            case "terminalSize":
+                if let dict = message.body as? [String: Any],
+                   let cols = dict["cols"] as? Int,
+                   let rows = dict["rows"] as? Int {
+                    onSizeChanged?(cols, rows)
+                }
+            default:
+                break
             }
         }
     }
@@ -69,6 +84,10 @@ final class WebViewStore {
         } else {
             buffer.append(data)
         }
+    }
+
+    func fitTerminal() {
+        webView?.evaluateJavaScript("fitTerminal();")
     }
 
     private func flushBuffer() {

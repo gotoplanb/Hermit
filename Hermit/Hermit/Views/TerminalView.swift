@@ -16,6 +16,7 @@ struct TerminalView: View {
         VStack(spacing: 0) {
             TerminalWebView(
                 onInput: { text in ssh.send(data: text) },
+                onSizeChanged: { cols, rows in ssh.resize(cols: cols, rows: rows) },
                 webViewStore: webViewStore
             )
             .ignoresSafeArea(.container, edges: .bottom)

@@ -18,6 +18,8 @@ final class SSHConnectionManager {
 
     var state: ConnectionState = .disconnected
     var onDataReceived: ((String) -> Void)?
+    var terminalCols: Int = 80
+    var terminalRows: Int = 24
 
     private var client: SSHClient?
     private var stdinWriter: TTYStdinWriter?
@@ -52,8 +54,8 @@ final class SSHConnectionManager {
                 .init(
                     wantReply: true,
                     term: "xterm-256color",
-                    terminalCharacterWidth: 80,
-                    terminalRowHeight: 24,
+                    terminalCharacterWidth: terminalCols,
+                    terminalRowHeight: terminalRows,
                     terminalPixelWidth: 0,
                     terminalPixelHeight: 0,
                     terminalModes: .init([:])
@@ -90,6 +92,15 @@ final class SSHConnectionManager {
             await MainActor.run {
                 self.state = .failed(error.localizedDescription)
             }
+        }
+    }
+
+    func resize(cols: Int, rows: Int) {
+        terminalCols = cols
+        terminalRows = rows
+        guard let writer = stdinWriter else { return }
+        Task {
+            try? await writer.changeSize(cols: cols, rows: rows, pixelWidth: 0, pixelHeight: 0)
         }
     }
 

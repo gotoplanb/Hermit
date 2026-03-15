@@ -7,7 +7,8 @@ struct RibbonConfig: Codable {
         RibbonButton(label: "1", labelType: .text, action: .sendString("1")),
         RibbonButton(label: "2", labelType: .text, action: .sendString("2")),
         RibbonButton(label: "3", labelType: .text, action: .sendString("3")),
-        RibbonButton(label: "esc", labelType: .text, action: .sendString("\u{1B}")),
+        RibbonButton(label: "return", labelType: .sfSymbol, action: .sendString("\r")),
+        RibbonButton(label: "escape", labelType: .sfSymbol, action: .sendString("\u{1B}")),
         RibbonButton(label: "mic.fill", labelType: .sfSymbol, action: .voiceInput),
     ])
 }

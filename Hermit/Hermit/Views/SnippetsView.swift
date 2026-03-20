@@ -48,7 +48,7 @@ struct SnippetsView: View {
         NavigationStack {
             List(snippets) { snippet in
                 Button {
-                    onSend(snippet.command)
+                    onSend(snippet.command + "\r")
                     dismiss()
                 } label: {
                     VStack(alignment: .leading, spacing: 4) {

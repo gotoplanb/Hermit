@@ -47,7 +47,12 @@ struct SessionListView: View {
     private var sessionList: some View {
         List {
             ForEach(dataStore.hosts) { host in
-                let hostSessions = dataStore.sessions(for: host)
+                let hostSessions = dataStore.sessions(for: host).sorted {
+                    // Raw shell (no tmux) first, then alphabetical by display name
+                    if $0.tmuxSessionName == nil && $1.tmuxSessionName != nil { return true }
+                    if $0.tmuxSessionName != nil && $1.tmuxSessionName == nil { return false }
+                    return $0.displayName.localizedCaseInsensitiveCompare($1.displayName) == .orderedAscending
+                }
                 if !hostSessions.isEmpty {
                     Section(host.displayName) {
                         ForEach(hostSessions) { session in

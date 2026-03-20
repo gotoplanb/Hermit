@@ -331,12 +331,12 @@
 		};
 		C6CDA4B6FD66A7F05D1ACD64 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			buildSettings = {ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon; CODE_SIGN_ENTITLEMENTS = Hermit/Hermit.entitlements; CODE_SIGN_STYLE = Automatic; INFOPLIST_FILE = Hermit/Info.plist; LD_RUNPATH_SEARCH_PATHS = ("","@executable_path/Frameworks",); PRODUCT_BUNDLE_IDENTIFIER = com.zeromissionllc.hermit; PRODUCT_NAME = "$(TARGET_NAME)"; SWIFT_EMIT_LOC_STRINGS = YES; TARGETED_DEVICE_FAMILY = 1; VERSIONING_SYSTEM = "apple-generic"; CURRENT_PROJECT_VERSION = 1; MARKETING_VERSION = 1.0; };
+			buildSettings = {ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon; CODE_SIGN_ENTITLEMENTS = Hermit/Hermit.entitlements; CODE_SIGN_STYLE = Automatic; INFOPLIST_FILE = Hermit/Info.plist; LD_RUNPATH_SEARCH_PATHS = ("","@executable_path/Frameworks",); PRODUCT_BUNDLE_IDENTIFIER = com.zeromissionllc.hermit; PRODUCT_NAME = "$(TARGET_NAME)"; SWIFT_EMIT_LOC_STRINGS = YES; TARGETED_DEVICE_FAMILY = 1; VERSIONING_SYSTEM = "apple-generic"; CURRENT_PROJECT_VERSION = 1; MARKETING_VERSION = 1.1; };
 			name = Debug;
 		};
 		C3D81280F6567D74515A67A7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			buildSettings = {ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon; CODE_SIGN_ENTITLEMENTS = Hermit/Hermit.entitlements; CODE_SIGN_STYLE = Automatic; INFOPLIST_FILE = Hermit/Info.plist; LD_RUNPATH_SEARCH_PATHS = ("","@executable_path/Frameworks",); PRODUCT_BUNDLE_IDENTIFIER = com.zeromissionllc.hermit; PRODUCT_NAME = "$(TARGET_NAME)"; SWIFT_EMIT_LOC_STRINGS = YES; TARGETED_DEVICE_FAMILY = 1; VERSIONING_SYSTEM = "apple-generic"; CURRENT_PROJECT_VERSION = 1; MARKETING_VERSION = 1.0; };
+			buildSettings = {ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon; CODE_SIGN_ENTITLEMENTS = Hermit/Hermit.entitlements; CODE_SIGN_STYLE = Automatic; INFOPLIST_FILE = Hermit/Info.plist; LD_RUNPATH_SEARCH_PATHS = ("","@executable_path/Frameworks",); PRODUCT_BUNDLE_IDENTIFIER = com.zeromissionllc.hermit; PRODUCT_NAME = "$(TARGET_NAME)"; SWIFT_EMIT_LOC_STRINGS = YES; TARGETED_DEVICE_FAMILY = 1; VERSIONING_SYSTEM = "apple-generic"; CURRENT_PROJECT_VERSION = 1; MARKETING_VERSION = 1.1; };
 			name = Release;
 		};
 		621385DDFDB50DB5DC3C7AFD /* Debug */ = {

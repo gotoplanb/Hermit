@@ -9,6 +9,7 @@ struct TerminalView: View {
     @State private var webViewStore = WebViewStore()
     @State private var voiceText = ""
     @State private var showingVoiceModal = false
+    @State private var showingSnippets = false
 
     private var host: Host? { dataStore.host(for: session) }
 
@@ -31,6 +32,14 @@ struct TerminalView: View {
             ToolbarItem(placement: .principal) {
                 connectionIndicator
             }
+            ToolbarItem(placement: .topBarTrailing) {
+                Button {
+                    showingSnippets = true
+                } label: {
+                    Image(systemName: "list.bullet.rectangle")
+                }
+                .accessibilityLabel("Snippets")
+            }
         }
         .task {
             guard let host else { return }
@@ -45,6 +54,11 @@ struct TerminalView: View {
         .sheet(isPresented: $showingVoiceModal) {
             VoiceInputModal(text: $voiceText) { finalText in
                 ssh.send(data: finalText + "\r")
+            }
+        }
+        .sheet(isPresented: $showingSnippets) {
+            SnippetsView { command in
+                ssh.send(data: command)
             }
         }
         .onChange(of: voiceCoordinator.isShowingVoiceModal) { _, show in

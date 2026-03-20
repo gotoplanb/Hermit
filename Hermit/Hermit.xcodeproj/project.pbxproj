@@ -25,6 +25,7 @@
 		B80371DE1CA43395E2B4C53B /* VoiceInputModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DEAE89058FED6E1760B2389 /* VoiceInputModal.swift */; };
 		9427E70309498CDBF08B3846 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD59E0EB71DC1D5B631D2753 /* SettingsView.swift */; };
 		A1B2C3D4E5F60718192A3B4C /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5E6F708192A3B4C5D6E7F80 /* AboutView.swift */; };
+		B2C3D4E5F607SNIPPET0001 /* SnippetsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3D4E5F6SNIPPET0002 /* SnippetsView.swift */; };
 		4DBAAD9EF51F20C2BEA161E5 /* terminal.html in Resources */ = {isa = PBXBuildFile; fileRef = 6CF469136B8BD7724C12D068 /* terminal.html */; };
 		B3C4D5E6F7081920CCCCDDDD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A2B3C4D5E6F70819AAAABBBB /* Assets.xcassets */; };
 		C4D5E6F7A8B90000XTERMBLD /* xterm in Resources */ = {isa = PBXBuildFile; fileRef = F1A2B3C4D5E60000XTERMDIR /* xterm */; };
@@ -71,6 +72,7 @@
 		B93D8483C507AE268486180F /* DataStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataStoreTests.swift; sourceTree = "<group>"; };
 		40AD2C9FD9796DDCE059852F /* URLSchemeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSchemeTests.swift; sourceTree = "<group>"; };
 		D5E6F708192A3B4C5D6E7F80 /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
+		E3D4E5F6SNIPPET0002 /* SnippetsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnippetsView.swift; sourceTree = "<group>"; };
 		A2B3C4D5E6F70819AAAABBBB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E1F2A3B4C5D6E7F8EEEEFFFF /* Hermit.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Hermit.entitlements; sourceTree = "<group>"; };
 		F1A2B3C4D5E60000XTERMDIR /* xterm */ = {isa = PBXFileReference; lastKnownFileType = folder; path = xterm; sourceTree = "<group>"; };
@@ -185,6 +187,7 @@
 				9DEAE89058FED6E1760B2389 /* VoiceInputModal.swift */,
 				CD59E0EB71DC1D5B631D2753 /* SettingsView.swift */,
 				D5E6F708192A3B4C5D6E7F80 /* AboutView.swift */,
+				E3D4E5F6SNIPPET0002 /* SnippetsView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -290,6 +293,7 @@
 				B80371DE1CA43395E2B4C53B /* VoiceInputModal.swift in Sources */,
 				9427E70309498CDBF08B3846 /* SettingsView.swift in Sources */,
 				A1B2C3D4E5F60718192A3B4C /* AboutView.swift in Sources */,
+				B2C3D4E5F607SNIPPET0001 /* SnippetsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

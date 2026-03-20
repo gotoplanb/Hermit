@@ -68,7 +68,7 @@ struct AboutView: View {
                     .buttonStyle(.borderedProminent)
                     .padding(.horizontal, 32)
 
-                    Link(destination: URL(string: "https://github.com/placeholder/hermit")!) {
+                    Link(destination: URL(string: "https://github.com/gotoplanb/Hermit")!) {
                         HStack {
                             Image(systemName: "arrow.up.right.square")
                             Text("View on GitHub")

@@ -10,8 +10,17 @@ struct TerminalView: View {
     @State private var voiceText = ""
     @State private var showingVoiceModal = false
     @State private var showingSnippets = false
+    @State private var activeRibbonIndex = 0
 
     private var host: Host? { dataStore.host(for: session) }
+
+    private var ribbonConfigs: [RibbonConfig] {
+        host?.ribbonConfigs ?? RibbonConfig.presets
+    }
+
+    private var activeRibbon: RibbonConfig {
+        ribbonConfigs[activeRibbonIndex % ribbonConfigs.count]
+    }
 
     var body: some View {
         VStack(spacing: 0) {
@@ -22,9 +31,7 @@ struct TerminalView: View {
             )
             .ignoresSafeArea(.container, edges: .bottom)
 
-            if let host {
-                ribbonBar(config: host.ribbonConfig)
-            }
+            ribbonBar(config: activeRibbon)
         }
         .navigationTitle(session.displayName)
         .navigationBarTitleDisplayMode(.inline)
@@ -33,12 +40,24 @@ struct TerminalView: View {
                 connectionIndicator
             }
             ToolbarItem(placement: .topBarTrailing) {
-                Button {
-                    showingSnippets = true
-                } label: {
-                    Image(systemName: "list.bullet.rectangle")
+                HStack(spacing: 12) {
+                    if ribbonConfigs.count > 1 {
+                        Button {
+                            withAnimation(.easeInOut(duration: 0.15)) {
+                                activeRibbonIndex = (activeRibbonIndex + 1) % ribbonConfigs.count
+                            }
+                        } label: {
+                            Image(systemName: "rectangle.stack")
+                        }
+                        .accessibilityLabel("Switch ribbon: \(activeRibbon.name)")
+                    }
+                    Button {
+                        showingSnippets = true
+                    } label: {
+                        Image(systemName: "list.bullet.rectangle")
+                    }
+                    .accessibilityLabel("Snippets")
                 }
-                .accessibilityLabel("Snippets")
             }
         }
         .task {

@@ -119,9 +119,9 @@ final class DataStore {
 
     private func migrateHost(_ host: Host) -> Host {
         var host = host
-        // Always sync ribbon config to current defaults
+        // Always sync ribbon configs to current defaults
         // During active development, this ensures all hosts pick up button changes
-        host.ribbonConfig = .default
+        host.ribbonConfigs = RibbonConfig.presets
         return host
     }
 

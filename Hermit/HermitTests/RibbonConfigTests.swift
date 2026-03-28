@@ -14,6 +14,10 @@ struct RibbonConfigTests {
         #expect(labels == ["1", "2", "return", "escape", "mic.fill"])
     }
 
+    @Test func defaultConfigHasName() {
+        #expect(RibbonConfig.default.name == "Default")
+    }
+
     @Test func escButtonSendsEscByte() throws {
         let escButton = RibbonConfig.default.buttons[3]
         guard case .sendString(let value) = escButton.action else {
@@ -44,10 +48,30 @@ struct RibbonConfigTests {
         #expect(mic.labelType == .sfSymbol)
     }
 
+    @Test func planModeHasFiveNumberButtons() {
+        let config = RibbonConfig.planMode
+        #expect(config.buttons.count == 5)
+        #expect(config.name == "Plan Mode")
+        for i in 0..<5 {
+            guard case .sendString(let value) = config.buttons[i].action else {
+                Issue.record("Expected sendString action for button \(i)")
+                return
+            }
+            #expect(value == "\(i + 1)")
+        }
+    }
+
+    @Test func presetsContainsBothConfigs() {
+        #expect(RibbonConfig.presets.count == 2)
+        #expect(RibbonConfig.presets[0].name == "Default")
+        #expect(RibbonConfig.presets[1].name == "Plan Mode")
+    }
+
     @Test func ribbonConfigRoundTrip() throws {
         let config = RibbonConfig.default
         let data = try JSONEncoder.hermit.encode(config)
         let decoded = try JSONDecoder.hermit.decode(RibbonConfig.self, from: data)
         #expect(decoded.buttons.count == config.buttons.count)
+        #expect(decoded.name == config.name)
     }
 }

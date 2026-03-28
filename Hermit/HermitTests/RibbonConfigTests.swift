@@ -11,7 +11,7 @@ struct RibbonConfigTests {
 
     @Test func defaultButtonLabels() {
         let labels = RibbonConfig.default.buttons.map(\.label)
-        #expect(labels == ["1", "2", "3", "esc", "mic.fill"])
+        #expect(labels == ["1", "2", "return", "escape", "mic.fill"])
     }
 
     @Test func escButtonSendsEscByte() throws {
@@ -24,14 +24,14 @@ struct RibbonConfigTests {
         #expect(value.unicodeScalars.first?.value == 0x1B)
     }
 
-    @Test func numberButtonsSendWithNewline() throws {
-        for i in 0..<3 {
+    @Test func numberButtonsSendDigitOnly() throws {
+        for i in 0..<2 {
             let button = RibbonConfig.default.buttons[i]
             guard case .sendString(let value) = button.action else {
                 Issue.record("Expected sendString action for button \(i)")
                 return
             }
-            #expect(value == "\(i + 1)\n")
+            #expect(value == "\(i + 1)")
         }
     }
 

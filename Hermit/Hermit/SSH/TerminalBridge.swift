@@ -12,6 +12,7 @@ struct TerminalWebView: UIViewRepresentable {
         controller.add(context.coordinator, name: "terminalInput")
         controller.add(context.coordinator, name: "terminalReady")
         controller.add(context.coordinator, name: "terminalSize")
+        controller.add(context.coordinator, name: "terminalSelection")
         config.userContentController = controller
 
         let webView = WKWebView(frame: .zero, configuration: config)
@@ -61,6 +62,10 @@ struct TerminalWebView: UIViewRepresentable {
                    let rows = dict["rows"] as? Int {
                     onSizeChanged?(cols, rows)
                 }
+            case "terminalSelection":
+                if let text = message.body as? String {
+                    webViewStore.hasSelection = !text.isEmpty
+                }
             default:
                 break
             }
@@ -76,6 +81,7 @@ final class WebViewStore {
             if isReady { flushBuffer() }
         }
     }
+    var hasSelection = false
     private var buffer: [String] = []
 
     func writeToTerminal(_ data: String) {
@@ -88,6 +94,31 @@ final class WebViewStore {
 
     func fitTerminal() {
         webView?.evaluateJavaScript("fitTerminal();")
+    }
+
+    func copyRecentLines(_ count: Int = 30) {
+        webView?.evaluateJavaScript("getRecentLines(\(count));") { result, _ in
+            if let text = result as? String, !text.isEmpty {
+                UIPasteboard.general.string = text
+            }
+        }
+    }
+
+    func copyAll() {
+        webView?.evaluateJavaScript("selectAll();") { [weak self] _, _ in
+            self?.webView?.evaluateJavaScript("getSelectedText();") { result, _ in
+                if let text = result as? String, !text.isEmpty {
+                    UIPasteboard.general.string = text
+                }
+            }
+        }
+    }
+
+    func setSelectMode(_ enabled: Bool) {
+        webView?.evaluateJavaScript("setSelectMode(\(enabled));")
+        if !enabled {
+            hasSelection = false
+        }
     }
 
     private func flushBuffer() {

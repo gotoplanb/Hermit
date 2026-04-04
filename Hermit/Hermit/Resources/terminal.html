@@ -26,6 +26,7 @@
     fontSize: 14,
     scrollback: 10000,
     cursorBlink: true,
+    allowProposedApi: true,
   });
 
   const fitAddon = new FitAddon.FitAddon();
@@ -62,6 +63,110 @@
     fitAddon.fit();
     reportSize();
   }
+
+  function getSelectedText() {
+    return term.getSelection();
+  }
+
+  function selectAll() {
+    term.selectAll();
+  }
+
+  function clearSelection() {
+    term.clearSelection();
+  }
+
+  function getRecentLines(count) {
+    const buffer = term.buffer.active;
+    const totalRows = buffer.length;
+    const cursorRow = buffer.baseY + buffer.cursorY;
+    // Find the last non-empty row
+    let lastRow = cursorRow;
+    while (lastRow > 0) {
+      const line = buffer.getLine(lastRow);
+      if (line && line.translateToString(true).trim().length > 0) break;
+      lastRow--;
+    }
+    const startRow = Math.max(0, lastRow - count + 1);
+    const lines = [];
+    for (let i = startRow; i <= lastRow; i++) {
+      const line = buffer.getLine(i);
+      if (line) {
+        lines.push(line.translateToString(true));
+      }
+    }
+    return lines.join('\n');
+  }
+
+  // --- Touch-based selection for iOS ---
+  let selectMode = false;
+
+  function setSelectMode(enabled) {
+    selectMode = enabled;
+    const el = document.querySelector('.xterm-screen');
+    if (el) {
+      el.style.touchAction = enabled ? 'none' : '';
+    }
+    if (!enabled) {
+      term.clearSelection();
+    }
+  }
+
+  function getSelectMode() {
+    return selectMode;
+  }
+
+  // Translate touch coordinates to terminal buffer position
+  function touchToMouseEvent(type, touch) {
+    const el = document.querySelector('.xterm-screen');
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const mouseEvt = new MouseEvent(type, {
+      clientX: touch.clientX,
+      clientY: touch.clientY,
+      button: 0,
+      bubbles: true,
+      cancelable: true,
+    });
+    el.dispatchEvent(mouseEvt);
+  }
+
+  const termEl = document.getElementById('terminal');
+
+  termEl.addEventListener('touchstart', (e) => {
+    if (!selectMode) return;
+    e.preventDefault();
+    e.stopPropagation();
+    if (e.touches.length === 1) {
+      touchToMouseEvent('mousedown', e.touches[0]);
+    }
+  }, { passive: false, capture: true });
+
+  termEl.addEventListener('touchmove', (e) => {
+    if (!selectMode) return;
+    e.preventDefault();
+    e.stopPropagation();
+    if (e.touches.length === 1) {
+      touchToMouseEvent('mousemove', e.touches[0]);
+    }
+  }, { passive: false, capture: true });
+
+  termEl.addEventListener('touchend', (e) => {
+    if (!selectMode) return;
+    e.preventDefault();
+    e.stopPropagation();
+    if (e.changedTouches.length === 1) {
+      touchToMouseEvent('mouseup', e.changedTouches[0]);
+    }
+  }, { passive: false, capture: true });
+
+  // Notify Swift when selection changes so the copy button can update
+  term.onSelectionChange(() => {
+    const text = term.getSelection();
+    if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.terminalSelection) {
+      window.webkit.messageHandlers.terminalSelection.postMessage(text || '');
+    }
+  });
 
   // Signal to Swift that xterm.js is ready
   if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.terminalReady) {

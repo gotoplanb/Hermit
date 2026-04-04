@@ -18,6 +18,15 @@ struct TerminalView: View {
         host?.ribbonConfigs ?? RibbonConfig.presets
     }
 
+    /// Total ribbon slots: user ribbons + copy ribbon as the last one
+    private var totalRibbonCount: Int {
+        ribbonConfigs.count + 1
+    }
+
+    private var isOnCopyRibbon: Bool {
+        activeRibbonIndex % totalRibbonCount == ribbonConfigs.count
+    }
+
     private var activeRibbon: RibbonConfig {
         ribbonConfigs[activeRibbonIndex % ribbonConfigs.count]
     }
@@ -41,16 +50,14 @@ struct TerminalView: View {
             }
             ToolbarItem(placement: .topBarTrailing) {
                 HStack(spacing: 12) {
-                    if ribbonConfigs.count > 1 {
-                        Button {
-                            withAnimation(.easeInOut(duration: 0.15)) {
-                                activeRibbonIndex = (activeRibbonIndex + 1) % ribbonConfigs.count
-                            }
-                        } label: {
-                            Image(systemName: "rectangle.stack")
+                    Button {
+                        withAnimation(.easeInOut(duration: 0.15)) {
+                            activeRibbonIndex = (activeRibbonIndex + 1) % totalRibbonCount
                         }
-                        .accessibilityLabel("Switch ribbon: \(activeRibbon.name)")
+                    } label: {
+                        Image(systemName: "rectangle.stack")
                     }
+                    .accessibilityLabel(isOnCopyRibbon ? "Switch ribbon: Copy" : "Switch ribbon: \(activeRibbon.name)")
                     Button {
                         showingSnippets = true
                     } label: {
@@ -80,6 +87,9 @@ struct TerminalView: View {
                 ssh.send(data: command)
             }
         }
+        .onChange(of: isOnCopyRibbon) { _, onCopy in
+            webViewStore.setSelectMode(onCopy)
+        }
         .onChange(of: voiceCoordinator.isShowingVoiceModal) { _, show in
             if show {
                 voiceText = voiceCoordinator.transcribedText
@@ -108,7 +118,70 @@ struct TerminalView: View {
         }
     }
 
+    @ViewBuilder
     private func ribbonBar(config: RibbonConfig) -> some View {
+        if isOnCopyRibbon {
+            selectionRibbonBar
+        } else {
+            normalRibbonBar(config: config)
+        }
+    }
+
+    @State private var showCopiedToast = false
+
+    private var selectionRibbonBar: some View {
+        HStack(spacing: 12) {
+            Button {
+                webViewStore.copyRecentLines()
+                flashCopiedToast()
+            } label: {
+                Label("Copy Recent", systemImage: "doc.on.doc")
+                    .font(.system(.body, weight: .medium))
+                    .frame(minWidth: 44, minHeight: 44)
+            }
+            .buttonStyle(.borderedProminent)
+            .buttonBorderShape(.roundedRectangle)
+
+            Button {
+                webViewStore.copyAll()
+                flashCopiedToast()
+            } label: {
+                Text("Copy All")
+                    .font(.system(.body, weight: .medium))
+                    .frame(minWidth: 44, minHeight: 44)
+            }
+            .buttonStyle(.bordered)
+            .buttonBorderShape(.roundedRectangle)
+        }
+        .padding(.horizontal)
+        .padding(.vertical, 8)
+        .frame(maxWidth: .infinity)
+        .background(.regularMaterial)
+        .overlay {
+            if showCopiedToast {
+                Text("Copied!")
+                    .font(.system(.body, weight: .semibold))
+                    .foregroundStyle(.white)
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 8)
+                    .background(.green, in: Capsule())
+                    .transition(.opacity.combined(with: .scale))
+            }
+        }
+    }
+
+    private func flashCopiedToast() {
+        withAnimation(.easeIn(duration: 0.15)) {
+            showCopiedToast = true
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            withAnimation(.easeOut(duration: 0.3)) {
+                showCopiedToast = false
+            }
+        }
+    }
+
+    private func normalRibbonBar(config: RibbonConfig) -> some View {
         HStack(spacing: 12) {
             ForEach(config.buttons) { button in
                 Button {
@@ -129,6 +202,7 @@ struct TerminalView: View {
                 .buttonStyle(.bordered)
                 .buttonBorderShape(.roundedRectangle)
             }
+
         }
         .padding(.horizontal)
         .padding(.vertical, 8)

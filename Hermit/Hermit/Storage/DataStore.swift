@@ -18,7 +18,8 @@ final class DataStore {
         let docs = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
         self.localFileURL = docs.appendingPathComponent("hermit-data.json")
 
-        // Try to get iCloud ubiquitous container
+        // Never use iCloud in the simulator — prevents clobbering production data
+        #if !targetEnvironment(simulator)
         if let containerURL = FileManager.default.url(forUbiquityContainerIdentifier: "iCloud.com.zeromissionllc.hermit") {
             let iCloudDocsURL = containerURL.appendingPathComponent("Documents")
             try? FileManager.default.createDirectory(at: iCloudDocsURL, withIntermediateDirectories: true)
@@ -26,6 +27,9 @@ final class DataStore {
         } else {
             self.iCloudURL = nil
         }
+        #else
+        self.iCloudURL = nil
+        #endif
 
         migrateLocalToiCloudIfNeeded()
         load()

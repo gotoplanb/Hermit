@@ -18,6 +18,8 @@ struct NewHostView: View {
             Form {
                 Section("Connection") {
                     TextField("Display Name", text: $displayName)
+                        .textInputAutocapitalization(.never)
+                        .autocorrectionDisabled()
                     TextField("Hostname", text: $hostname)
                         .textInputAutocapitalization(.never)
                         .autocorrectionDisabled()

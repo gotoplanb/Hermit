@@ -14,7 +14,11 @@ struct NewSessionView: View {
             Form {
                 Section("Session") {
                     TextField("Display Name", text: $displayName)
+                        .textInputAutocapitalization(.never)
+                        .autocorrectionDisabled()
                     TextField("tmux Session Name (optional)", text: $tmuxSessionName)
+                        .textInputAutocapitalization(.never)
+                        .autocorrectionDisabled()
                 }
 
                 Section("Host") {

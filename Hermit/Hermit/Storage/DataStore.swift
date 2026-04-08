@@ -45,6 +45,14 @@ final class DataStore {
 
     func load() {
         let url = fileURL
+
+        // If iCloud file isn't downloaded yet, trigger download and wait for the
+        // metadata query to notify us when it arrives — do NOT create an empty file
+        if let iCloudURL, !FileManager.default.fileExists(atPath: iCloudURL.path) {
+            try? FileManager.default.startDownloadingUbiquitousItem(at: iCloudURL)
+            return
+        }
+
         guard FileManager.default.fileExists(atPath: url.path) else { return }
         do {
             var data: Data?
@@ -65,6 +73,13 @@ final class DataStore {
     }
 
     func save() {
+        // Never overwrite iCloud with empty data — protects against saving before
+        // the iCloud file has downloaded
+        if iCloudURL != nil && hosts.isEmpty && sessions.isEmpty {
+            print("Refusing to save empty data to iCloud")
+            return
+        }
+
         do {
             let backup = BackupData(
                 version: 1,
@@ -130,8 +145,10 @@ final class DataStore {
     }
 
     private func createFileIfNeeded() {
-        let url = fileURL
-        if !FileManager.default.fileExists(atPath: url.path) {
+        // Only create a seed file for local-only storage (no iCloud).
+        // When iCloud is available, we wait for the download instead.
+        guard iCloudURL == nil else { return }
+        if !FileManager.default.fileExists(atPath: localFileURL.path) {
             save()
         }
     }

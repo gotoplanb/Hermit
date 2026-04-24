@@ -1,0 +1,3 @@
+- Copy terminal output to clipboard via the new Copy ribbon (cycle ribbons with the toolbar button)
+- Fixed a bug where session data could be lost when opening the app on a new device before iCloud sync completed
+- Disabled autocorrect on host and session name fields

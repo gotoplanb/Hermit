@@ -11,6 +11,9 @@ struct TerminalView: View {
     @State private var showingVoiceModal = false
     @State private var showingSnippets = false
     @State private var activeRibbonIndex = 0
+    // Set when ↑Page is pressed; cleared (with a `q` to tmux) by Copy Recent / Mic so the
+    // user isn't stranded in tmux copy mode after scrolling back.
+    @State private var inTmuxCopyMode = false
 
     private var host: Host? { dataStore.host(for: session) }
 
@@ -129,7 +132,9 @@ struct TerminalView: View {
     private var selectionRibbonBar: some View {
         HStack(spacing: 12) {
             Button {
-                webViewStore.copyRecentLines()
+                webViewStore.copyRecentLines {
+                    exitTmuxCopyModeIfNeeded()
+                }
                 flashCopiedToast()
             } label: {
                 Label("Copy Recent", systemImage: "doc.on.doc")
@@ -140,34 +145,42 @@ struct TerminalView: View {
             .buttonBorderShape(.roundedRectangle)
 
             Button {
-                webViewStore.scrollUp(30)
+                // tmux: prefix (Ctrl-B) + PgUp — enters copy mode on the first press and
+                // scrolls up one page; subsequent presses keep scrolling (prefix+PgUp in
+                // copy mode re-runs `copy-mode -u`).
+                ssh.send(data: "\u{02}\u{1B}[5~")
+                inTmuxCopyMode = true
             } label: {
                 HStack(spacing: 4) {
                     Image(systemName: "arrow.up")
-                    Text("30")
+                    Text("Page")
                 }
                 .font(.system(.body, weight: .medium))
                 .frame(minWidth: 44, minHeight: 44)
             }
             .buttonStyle(.bordered)
             .buttonBorderShape(.roundedRectangle)
-            .accessibilityLabel("Scroll up 30 lines")
+            .accessibilityLabel("Page up in tmux")
 
             Button {
-                webViewStore.scrollDown(30)
+                // PgDn without the tmux prefix: scrolls down inside copy mode and auto-exits
+                // when the bottom is reached. The prefix would route prefix+PgDn (no default
+                // binding) and do nothing in copy mode.
+                ssh.send(data: "\u{1B}[6~")
             } label: {
                 HStack(spacing: 4) {
                     Image(systemName: "arrow.down")
-                    Text("30")
+                    Text("Page")
                 }
                 .font(.system(.body, weight: .medium))
                 .frame(minWidth: 44, minHeight: 44)
             }
             .buttonStyle(.bordered)
             .buttonBorderShape(.roundedRectangle)
-            .accessibilityLabel("Scroll down 30 lines")
+            .accessibilityLabel("Page down in tmux")
 
             Button {
+                exitTmuxCopyModeIfNeeded()
                 triggerVoiceInput()
             } label: {
                 Image(systemName: "mic.fill")
@@ -198,6 +211,12 @@ struct TerminalView: View {
     private func triggerVoiceInput() {
         let settings = AppSettings.load()
         voiceCoordinator.handleVoiceButton(settings: settings)
+    }
+
+    private func exitTmuxCopyModeIfNeeded() {
+        guard inTmuxCopyMode else { return }
+        ssh.send(data: "q")
+        inTmuxCopyMode = false
     }
 
     private func flashCopiedToast() {

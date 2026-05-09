@@ -96,20 +96,13 @@ final class WebViewStore {
         webView?.evaluateJavaScript("fitTerminal();")
     }
 
-    func copyRecentLines(_ count: Int = 30) {
+    func copyRecentLines(_ count: Int = 30, completion: @escaping () -> Void = {}) {
         webView?.evaluateJavaScript("getContextLines(\(count));") { result, _ in
             if let text = result as? String, !text.isEmpty {
                 UIPasteboard.general.string = text
             }
+            completion()
         }
-    }
-
-    func scrollUp(_ lines: Int) {
-        webView?.evaluateJavaScript("term.scrollLines(\(-lines));")
-    }
-
-    func scrollDown(_ lines: Int) {
-        webView?.evaluateJavaScript("term.scrollLines(\(lines));")
     }
 
     func setSelectMode(_ enabled: Bool) {

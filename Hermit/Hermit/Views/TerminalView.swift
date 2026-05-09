@@ -82,14 +82,12 @@ struct TerminalView: View {
         }
         .sheet(isPresented: $showingVoiceModal) {
             VoiceInputModal(text: $voiceText) { finalText in
-                ssh.send(data: finalText)
-                // Claude Code (and most Ink TUIs) coalesce a fast input burst into a
-                // paste, so a trailing \r in the same write becomes "newline at end of
-                // paste" rather than submit. A short gap lets the TUI commit the paste
-                // first; the standalone \r then registers as Enter.
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                    ssh.send(data: "\r")
-                }
+                // Wrap in bracketed-paste markers so the TUI treats the dictated text
+                // as a single paste regardless of arrival timing — the \r after the
+                // closing marker is then unambiguously an Enter keypress. Sending it
+                // as one write also avoids a race between two detached Tasks, which
+                // could reorder the Enter ahead of long text on slow links.
+                ssh.send(data: "\u{1B}[200~\(finalText)\u{1B}[201~\r")
             }
         }
         .sheet(isPresented: $showingSnippets) {

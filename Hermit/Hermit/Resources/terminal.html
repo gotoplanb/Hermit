@@ -109,6 +109,31 @@
     return lines.join('\n');
   }
 
+  // Smart copy: at-bottom uses cursor-anchored recent lines.
+  // Scrolled: copies the visible viewport plus `beforeAfter` lines on each side.
+  function getContextLines(beforeAfter) {
+    const buffer = term.buffer.active;
+    const isScrolled = buffer.viewportY < buffer.baseY;
+    if (!isScrolled) {
+      return getRecentLines(beforeAfter);
+    }
+    let endRow = Math.min(buffer.length - 1, buffer.viewportY + term.rows - 1 + beforeAfter);
+    while (endRow > 0) {
+      const line = buffer.getLine(endRow);
+      if (line && !isChromeLine(line.translateToString(true))) break;
+      endRow--;
+    }
+    const startRow = Math.max(0, buffer.viewportY - beforeAfter);
+    const lines = [];
+    for (let i = startRow; i <= endRow; i++) {
+      const line = buffer.getLine(i);
+      if (line) {
+        lines.push(line.translateToString(true));
+      }
+    }
+    return lines.join('\n');
+  }
+
   // --- Touch-based selection for iOS ---
   let selectMode = false;
 

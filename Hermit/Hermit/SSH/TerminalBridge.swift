@@ -97,21 +97,19 @@ final class WebViewStore {
     }
 
     func copyRecentLines(_ count: Int = 30) {
-        webView?.evaluateJavaScript("getRecentLines(\(count));") { result, _ in
+        webView?.evaluateJavaScript("getContextLines(\(count));") { result, _ in
             if let text = result as? String, !text.isEmpty {
                 UIPasteboard.general.string = text
             }
         }
     }
 
-    func copyAll() {
-        webView?.evaluateJavaScript("selectAll();") { [weak self] _, _ in
-            self?.webView?.evaluateJavaScript("getSelectedText();") { result, _ in
-                if let text = result as? String, !text.isEmpty {
-                    UIPasteboard.general.string = text
-                }
-            }
-        }
+    func scrollUp(_ lines: Int) {
+        webView?.evaluateJavaScript("term.scrollLines(\(-lines));")
+    }
+
+    func scrollDown(_ lines: Int) {
+        webView?.evaluateJavaScript("term.scrollLines(\(lines));")
     }
 
     func setSelectMode(_ enabled: Bool) {

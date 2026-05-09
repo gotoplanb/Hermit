@@ -87,9 +87,6 @@ struct TerminalView: View {
                 ssh.send(data: command)
             }
         }
-        .onChange(of: isOnCopyRibbon) { _, onCopy in
-            webViewStore.setSelectMode(onCopy)
-        }
         .onChange(of: voiceCoordinator.isShowingVoiceModal) { _, show in
             if show {
                 voiceText = voiceCoordinator.transcribedText
@@ -143,15 +140,43 @@ struct TerminalView: View {
             .buttonBorderShape(.roundedRectangle)
 
             Button {
-                webViewStore.copyAll()
-                flashCopiedToast()
+                webViewStore.scrollUp(30)
             } label: {
-                Text("Copy All")
-                    .font(.system(.body, weight: .medium))
+                HStack(spacing: 4) {
+                    Image(systemName: "arrow.up")
+                    Text("30")
+                }
+                .font(.system(.body, weight: .medium))
+                .frame(minWidth: 44, minHeight: 44)
+            }
+            .buttonStyle(.bordered)
+            .buttonBorderShape(.roundedRectangle)
+            .accessibilityLabel("Scroll up 30 lines")
+
+            Button {
+                webViewStore.scrollDown(30)
+            } label: {
+                HStack(spacing: 4) {
+                    Image(systemName: "arrow.down")
+                    Text("30")
+                }
+                .font(.system(.body, weight: .medium))
+                .frame(minWidth: 44, minHeight: 44)
+            }
+            .buttonStyle(.bordered)
+            .buttonBorderShape(.roundedRectangle)
+            .accessibilityLabel("Scroll down 30 lines")
+
+            Button {
+                triggerVoiceInput()
+            } label: {
+                Image(systemName: "mic.fill")
+                    .font(.body)
                     .frame(minWidth: 44, minHeight: 44)
             }
             .buttonStyle(.bordered)
             .buttonBorderShape(.roundedRectangle)
+            .accessibilityLabel("Voice input")
         }
         .padding(.horizontal)
         .padding(.vertical, 8)
@@ -168,6 +193,11 @@ struct TerminalView: View {
                     .transition(.opacity.combined(with: .scale))
             }
         }
+    }
+
+    private func triggerVoiceInput() {
+        let settings = AppSettings.load()
+        voiceCoordinator.handleVoiceButton(settings: settings)
     }
 
     private func flashCopiedToast() {

@@ -82,7 +82,14 @@ struct TerminalView: View {
         }
         .sheet(isPresented: $showingVoiceModal) {
             VoiceInputModal(text: $voiceText) { finalText in
-                ssh.send(data: finalText + "\r")
+                ssh.send(data: finalText)
+                // Claude Code (and most Ink TUIs) coalesce a fast input burst into a
+                // paste, so a trailing \r in the same write becomes "newline at end of
+                // paste" rather than submit. A short gap lets the TUI commit the paste
+                // first; the standalone \r then registers as Enter.
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                    ssh.send(data: "\r")
+                }
             }
         }
         .sheet(isPresented: $showingSnippets) {

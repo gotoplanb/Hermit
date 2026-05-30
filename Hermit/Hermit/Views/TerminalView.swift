@@ -271,6 +271,14 @@ struct TerminalView: View {
         case .voiceInput:
             let settings = AppSettings.load()
             voiceCoordinator.handleVoiceButton(settings: settings)
+        case .acceptSuggestion:
+            // Claude Code now requires Tab to accept the dim suggestion before Enter
+            // submits. Send Tab first, then \r as a standalone write so the TUI
+            // processes the accept before the submit (same pattern as voice input).
+            ssh.send(data: "\t")
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                ssh.send(data: "\r")
+            }
         }
     }
 }

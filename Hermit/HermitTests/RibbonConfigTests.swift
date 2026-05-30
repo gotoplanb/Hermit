@@ -39,6 +39,15 @@ struct RibbonConfigTests {
         }
     }
 
+    @Test func returnButtonIsAcceptSuggestion() {
+        let returnButton = RibbonConfig.default.buttons[2]
+        guard case .acceptSuggestion = returnButton.action else {
+            Issue.record("Expected acceptSuggestion action so Tab+Enter is sent for Claude Code's accept-then-submit flow")
+            return
+        }
+        #expect(returnButton.label == "return")
+    }
+
     @Test func micButtonIsVoiceInput() {
         let mic = RibbonConfig.default.buttons[4]
         guard case .voiceInput = mic.action else {

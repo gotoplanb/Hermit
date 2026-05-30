@@ -7,7 +7,7 @@ struct RibbonConfig: Codable {
     static let `default` = RibbonConfig(name: "Default", buttons: [
         RibbonButton(label: "1", labelType: .text, action: .sendString("1")),
         RibbonButton(label: "2", labelType: .text, action: .sendString("2")),
-        RibbonButton(label: "return", labelType: .sfSymbol, action: .sendString("\r")),
+        RibbonButton(label: "return", labelType: .sfSymbol, action: .acceptSuggestion),
         RibbonButton(label: "escape", labelType: .sfSymbol, action: .sendString("\u{1B}")),
         RibbonButton(label: "mic.fill", labelType: .sfSymbol, action: .voiceInput),
     ])
@@ -50,4 +50,5 @@ enum LabelType: String, Codable {
 enum ButtonAction: Codable {
     case sendString(String)
     case voiceInput
+    case acceptSuggestion
 }

@@ -6,6 +6,8 @@ A focused iOS SSH client built for developers who live in tmux and Claude Code.
 
 Hermit is not a general-purpose terminal emulator. It connects to remote dev machines, attaches to named tmux sessions, and provides configurable soft keys and voice input for working with Claude Code from your phone.
 
+[Download from the iOS App Store](https://apps.apple.com/us/app/hermit-ssh/id6760623047)
+
 ## Features
 
 - SSH connections with private key authentication

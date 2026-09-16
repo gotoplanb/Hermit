@@ -25,7 +25,7 @@ platform :ios do
       scheme: "Hermit",
       export_method: "app-store",
       clean: true,
-      xcargs: "DEVELOPMENT_TEAM=#{ENV['TEAM_ID']}",
+      xcargs: "-allowProvisioningUpdates DEVELOPMENT_TEAM=#{ENV['TEAM_ID']}",
       export_options: {
         provisioningProfiles: {
           "com.zeromissionllc.hermit" => "Hermit App Store",
@@ -59,7 +59,7 @@ platform :ios do
       scheme: "Hermit",
       export_method: "app-store",
       clean: true,
-      xcargs: "DEVELOPMENT_TEAM=#{ENV['TEAM_ID']}",
+      xcargs: "-allowProvisioningUpdates DEVELOPMENT_TEAM=#{ENV['TEAM_ID']}",
       export_options: {
         provisioningProfiles: {
           "com.zeromissionllc.hermit" => "Hermit App Store",

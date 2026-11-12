@@ -79,20 +79,25 @@ xcrun simctl launch booted com.zeromissionllc.hermit
 
 The simulator shares the Mac's network, so it can reach any host the Mac can — including `127.0.0.1` (the Mac itself) and ngrok tunnels. Citadel is integrated, so this exercises **real** end-to-end SSH. The current `.hermit-dev.json` points at a loopback target (`dave@127.0.0.1:22`) that attaches to a local tmux session named `hermit`; it requires macOS Remote Login enabled and an authorized key at `~/.ssh/hermit_sim_mbp`.
 
-### Driving the simulator UI (idb)
+### Driving the simulator UI (AXe)
 
-`simctl` can't tap, and AppleScript/cliclick need macOS Accessibility permission (not granted to the terminal), so use `idb` to tap/type/screenshot:
+`simctl` can't tap, and AppleScript/cliclick need macOS Accessibility permission (not granted to the terminal). Use [AXe](https://github.com/cameroncooke/AXe), which drives the simulator via Apple's accessibility + HID APIs — no sudo, no Accessibility grant. It's by the same author as XcodeBuildMCP, so it pairs with that MCP server; prefer the MCP's own UI tools when they cover the case.
 
 ```bash
-# One-time install: idb_companion (Homebrew) + fb-idb (persistent venv)
-brew tap facebook/fb && brew trust facebook/fb && brew install idb-companion
-python3 -m venv ~/.hermit-idb-venv && ~/.hermit-idb-venv/bin/pip install fb-idb
+# One-time install
+brew tap cameroncooke/axe && brew trust cameroncooke/axe && brew install axe
+axe init --dest ~/.claude/skills    # optional: install the AXe skill for Claude
 
-IDB=~/.hermit-idb-venv/bin/idb
 UDID=$(xcrun simctl list devices booted | grep -oE '[0-9A-F-]{36}' | head -1)
-$IDB ui describe-all --udid $UDID   # JSON of elements with AXLabel + frame (points)
-$IDB ui tap <x> <y> --udid $UDID    # tap the center of a frame (iPhone 17 Pro screen is 402x874 pt)
+axe list-simulators                        # every simulator: UDID, name, state, OS
+axe describe-ui --udid $UDID               # accessibility hierarchy as JSON
+axe tap -x 201 -y 242 --udid $UDID         # tap by point (iPhone 17 Pro screen is 402x874 pt)
+axe tap --label "hermit, tmux: hermit" --udid $UDID   # or target an element's activation point
+axe type "hello" --udid $UDID              # also --stdin / --file; US keyboard chars only
+axe screenshot --output shot.png --udid $UDID
 ```
+
+`tap` also matches on `--id` (accessibilityIdentifier) or `--value`, narrowed by `--element-type` (Button, TextField, …). `axe batch` runs ordered steps in one HID session; `axe record-video` captures H.264 MP4.
 
 ## Test
 

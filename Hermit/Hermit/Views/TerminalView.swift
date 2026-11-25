@@ -14,6 +14,9 @@ struct TerminalView: View {
     // Set when ↑Page is pressed; cleared (with a `q` to tmux) by Copy Recent / Mic so the
     // user isn't stranded in tmux copy mode after scrolling back.
     @State private var inTmuxCopyMode = false
+    // Drives the hide-keyboard toolbar button, which replaces the ✓ from WebKit's
+    // accessory bar (suppressed in TerminalWKWebView).
+    @State private var isKeyboardVisible = false
 
     private var host: Host? { dataStore.host(for: session) }
 
@@ -65,6 +68,14 @@ struct TerminalView: View {
             }
             ToolbarItem(placement: .topBarTrailing) {
                 HStack(spacing: 12) {
+                    if isKeyboardVisible {
+                        Button {
+                            webViewStore.dismissKeyboard()
+                        } label: {
+                            Image(systemName: "keyboard.chevron.compact.down")
+                        }
+                        .accessibilityLabel("Hide keyboard")
+                    }
                     Button {
                         withAnimation(.easeInOut(duration: 0.15)) {
                             activeRibbonIndex = (activeRibbonIndex + 1) % totalRibbonCount
@@ -81,6 +92,12 @@ struct TerminalView: View {
                     .accessibilityLabel("Snippets")
                 }
             }
+        }
+        .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillShowNotification)) { _ in
+            isKeyboardVisible = true
+        }
+        .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillHideNotification)) { _ in
+            isKeyboardVisible = false
         }
         .task {
             guard let host else { return }

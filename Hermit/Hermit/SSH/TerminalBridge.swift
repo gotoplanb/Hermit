@@ -1,6 +1,15 @@
 import SwiftUI
 import WebKit
 
+/// WKWebView without WebKit's form accessory bar (the ^ ∨ ✓ strip above the keyboard).
+/// Its previous/next-field arrows mean nothing in a terminal, and it costs ~2 rows
+/// whenever xterm's input is focused. WebKit asks the web view for its
+/// `inputAccessoryView`, so overriding it here suppresses the bar. The ✓ (dismiss)
+/// is replaced by the hide-keyboard button in TerminalView's toolbar.
+final class TerminalWKWebView: WKWebView {
+    override var inputAccessoryView: UIView? { nil }
+}
+
 struct TerminalWebView: UIViewRepresentable {
     let onInput: (String) -> Void
     let onSizeChanged: ((Int, Int) -> Void)?
@@ -15,7 +24,7 @@ struct TerminalWebView: UIViewRepresentable {
         controller.add(context.coordinator, name: "terminalSelection")
         config.userContentController = controller
 
-        let webView = WKWebView(frame: .zero, configuration: config)
+        let webView = TerminalWKWebView(frame: .zero, configuration: config)
         webView.isOpaque = false
         // Match xterm's theme background (#1e1e1e in terminal.html) so the safe-area
         // inset WebKit leaves below the last row blends in instead of showing a black band.
@@ -92,6 +101,12 @@ final class WebViewStore {
         } else {
             buffer.append(data)
         }
+    }
+
+    /// Blur xterm's hidden textarea so the software keyboard goes away.
+    func dismissKeyboard() {
+        webView?.evaluateJavaScript("term.blur();")
+        webView?.endEditing(true)
     }
 
     func fitTerminal() {

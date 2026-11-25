@@ -35,15 +35,27 @@ struct TerminalView: View {
     }
 
     var body: some View {
-        VStack(spacing: 0) {
-            TerminalWebView(
-                onInput: { text in ssh.send(data: text) },
-                onSizeChanged: { cols, rows in ssh.resize(cols: cols, rows: rows) },
-                webViewStore: webViewStore
-            )
-            .ignoresSafeArea(.container, edges: .bottom)
+        GeometryReader { proxy in
+            // Wide screens (the iPhone Duo's unfolded inner display, which is landscape in
+            // its native "portrait") are short on rows, so the ribbon moves to a vertical
+            // rail on the trailing edge instead of eating height at the bottom.
+            // AnyLayout keeps the web view's identity across a fold/unfold, so the
+            // terminal isn't torn down and rebuilt when the layout flips.
+            let axis: Axis = proxy.size.width > proxy.size.height ? .vertical : .horizontal
+            let layout = axis == .vertical
+                ? AnyLayout(HStackLayout(spacing: 0))
+                : AnyLayout(VStackLayout(spacing: 0))
 
-            ribbonBar(config: activeRibbon)
+            layout {
+                TerminalWebView(
+                    onInput: { text in ssh.send(data: text) },
+                    onSizeChanged: { cols, rows in ssh.resize(cols: cols, rows: rows) },
+                    webViewStore: webViewStore
+                )
+                .ignoresSafeArea(.container, edges: .bottom)
+
+                ribbonBar(config: activeRibbon, axis: axis)
+            }
         }
         .navigationTitle(session.displayName)
         .navigationBarTitleDisplayMode(.inline)
@@ -124,30 +136,67 @@ struct TerminalView: View {
     }
 
     @ViewBuilder
-    private func ribbonBar(config: RibbonConfig) -> some View {
-        if isOnCopyRibbon {
-            selectionRibbonBar
-        } else {
-            normalRibbonBar(config: config)
+    private func ribbonBar(config: RibbonConfig, axis: Axis) -> some View {
+        Group {
+            if isOnCopyRibbon {
+                selectionRibbonBar(axis: axis)
+            } else {
+                normalRibbonBar(config: config, axis: axis)
+            }
+        }
+        .frame(maxWidth: axis == .horizontal ? .infinity : nil,
+               maxHeight: axis == .vertical ? .infinity : nil)
+        // Bleed only into the home-indicator area, not up behind the navigation bar.
+        .background(.regularMaterial, ignoresSafeAreaEdges: .bottom)
+    }
+
+    /// Lays ribbon buttons out in a row (bottom bar) or a column (side rail). Buttons
+    /// share the available length instead of using fixed widths, so the bar can never
+    /// be wider than the screen. (A fixed-width bar used to overflow 402pt screens and
+    /// push the whole terminal off the leading edge, clipping the first column.)
+    @ViewBuilder
+    private func ribbonStack(axis: Axis, @ViewBuilder content: () -> some View) -> some View {
+        switch axis {
+        case .horizontal:
+            HStack(spacing: 8) { content() }
+                .padding(.horizontal, 12)
+                .padding(.vertical, 8)
+        case .vertical:
+            VStack(spacing: 10) {
+                Spacer(minLength: 0) // bottom-align: closest to a thumb holding the device
+                content()
+            }
+            .frame(width: Self.railButtonWidth)
+            .padding(.horizontal, 10)
+            .padding(.vertical, 12)
         }
     }
 
+    private static let railButtonWidth: CGFloat = 56
+
     @State private var showCopiedToast = false
 
-    private var selectionRibbonBar: some View {
-        HStack(spacing: 12) {
+    private func selectionRibbonBar(axis: Axis) -> some View {
+        ribbonStack(axis: axis) {
             Button {
                 webViewStore.copyRecentLines {
                     exitTmuxCopyModeIfNeeded()
                 }
                 flashCopiedToast()
             } label: {
-                Label("Copy Recent", systemImage: "doc.on.doc")
-                    .font(.system(.body, weight: .medium))
-                    .frame(minWidth: 44, minHeight: 44)
+                // Longest label that fits: "Copy Recent" on roomy rows, "Copy" on narrow
+                // phones, icon-only in the rail. VoiceOver always reads "Copy Recent".
+                ViewThatFits(in: .horizontal) {
+                    Label("Copy Recent", systemImage: "doc.on.doc").fixedSize()
+                    Label("Copy", systemImage: "doc.on.doc").fixedSize()
+                    Image(systemName: "doc.on.doc")
+                }
+                .font(.system(.body, weight: .medium))
+                .modifier(RibbonLabelFrame(axis: axis))
             }
             .buttonStyle(.borderedProminent)
             .buttonBorderShape(.roundedRectangle)
+            .accessibilityLabel("Copy Recent")
 
             Button {
                 // tmux: prefix (Ctrl-B) + PgUp — enters copy mode on the first press and
@@ -156,12 +205,7 @@ struct TerminalView: View {
                 ssh.send(data: "\u{02}\u{1B}[5~")
                 inTmuxCopyMode = true
             } label: {
-                HStack(spacing: 4) {
-                    Image(systemName: "arrow.up")
-                    Text("Page")
-                }
-                .font(.system(.body, weight: .medium))
-                .frame(minWidth: 44, minHeight: 44)
+                pageLabel(systemImage: "arrow.up", axis: axis)
             }
             .buttonStyle(.bordered)
             .buttonBorderShape(.roundedRectangle)
@@ -173,12 +217,7 @@ struct TerminalView: View {
                 // binding) and do nothing in copy mode.
                 ssh.send(data: "\u{1B}[6~")
             } label: {
-                HStack(spacing: 4) {
-                    Image(systemName: "arrow.down")
-                    Text("Page")
-                }
-                .font(.system(.body, weight: .medium))
-                .frame(minWidth: 44, minHeight: 44)
+                pageLabel(systemImage: "arrow.down", axis: axis)
             }
             .buttonStyle(.bordered)
             .buttonBorderShape(.roundedRectangle)
@@ -190,16 +229,12 @@ struct TerminalView: View {
             } label: {
                 Image(systemName: "mic.fill")
                     .font(.body)
-                    .frame(minWidth: 44, minHeight: 44)
+                    .modifier(RibbonLabelFrame(axis: axis))
             }
             .buttonStyle(.bordered)
             .buttonBorderShape(.roundedRectangle)
             .accessibilityLabel("Voice input")
         }
-        .padding(.horizontal)
-        .padding(.vertical, 8)
-        .frame(maxWidth: .infinity)
-        .background(.regularMaterial)
         .overlay {
             if showCopiedToast {
                 Text("Copied!")
@@ -211,6 +246,20 @@ struct TerminalView: View {
                     .transition(.opacity.combined(with: .scale))
             }
         }
+    }
+
+    /// "↑ Page" in a row; arrow over a small "Page" caption in the narrow rail.
+    private func pageLabel(systemImage: String, axis: Axis) -> some View {
+        let layout = axis == .vertical
+            ? AnyLayout(VStackLayout(spacing: 2))
+            : AnyLayout(HStackLayout(spacing: 4))
+        return layout {
+            Image(systemName: systemImage)
+            Text("Page")
+                .font(axis == .vertical ? .caption2 : .system(.body, weight: .medium))
+        }
+        .font(.system(.body, weight: .medium))
+        .modifier(RibbonLabelFrame(axis: axis))
     }
 
     private func triggerVoiceInput() {
@@ -235,8 +284,8 @@ struct TerminalView: View {
         }
     }
 
-    private func normalRibbonBar(config: RibbonConfig) -> some View {
-        HStack(spacing: 12) {
+    private func normalRibbonBar(config: RibbonConfig, axis: Axis) -> some View {
+        ribbonStack(axis: axis) {
             ForEach(config.buttons) { button in
                 Button {
                     handleRibbonButton(button)
@@ -251,17 +300,12 @@ struct TerminalView: View {
                                 .font(.body)
                         }
                     }
-                    .frame(minWidth: 44, minHeight: 44)
+                    .modifier(RibbonLabelFrame(axis: axis))
                 }
                 .buttonStyle(.bordered)
                 .buttonBorderShape(.roundedRectangle)
             }
-
         }
-        .padding(.horizontal)
-        .padding(.vertical, 8)
-        .frame(maxWidth: .infinity)
-        .background(.regularMaterial)
     }
 
     private func handleRibbonButton(_ button: RibbonButton) {
@@ -280,5 +324,22 @@ struct TerminalView: View {
                 ssh.send(data: "\r")
             }
         }
+    }
+}
+
+/// Sizing for a ribbon button label. In a bottom row, buttons split the width evenly
+/// (capped so they don't turn into slabs on wide screens); in the side rail they take
+/// the rail's width. Height is a 44pt minimum touch target, and text scales down
+/// rather than pushing the bar wider than the screen.
+private struct RibbonLabelFrame: ViewModifier {
+    let axis: Axis
+
+    func body(content: Content) -> some View {
+        content
+            .lineLimit(1)
+            .minimumScaleFactor(0.6)
+            // minWidth 0: the button's own padding keeps the tap target >= 44pt wide,
+            // and a fixed label minimum is what let the old bar overflow narrow screens.
+            .frame(minWidth: 0, maxWidth: axis == .horizontal ? 120 : .infinity, minHeight: 44)
     }
 }

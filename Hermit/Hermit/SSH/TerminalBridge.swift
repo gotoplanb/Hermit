@@ -17,7 +17,9 @@ struct TerminalWebView: UIViewRepresentable {
 
         let webView = WKWebView(frame: .zero, configuration: config)
         webView.isOpaque = false
-        webView.backgroundColor = .black
+        // Match xterm's theme background (#1e1e1e in terminal.html) so the safe-area
+        // inset WebKit leaves below the last row blends in instead of showing a black band.
+        webView.backgroundColor = UIColor(red: 0x1e / 255, green: 0x1e / 255, blue: 0x1e / 255, alpha: 1)
         webView.scrollView.isScrollEnabled = false
 
         if let htmlURL = Bundle.main.url(forResource: "terminal", withExtension: "html") {
